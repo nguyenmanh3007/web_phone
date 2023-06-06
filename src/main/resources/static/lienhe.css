@@ -1,0 +1,77 @@
+/* lien he */
+.sub1-header{
+    height: 50vh;
+    width: 100%;
+    background-image: linear-gradient(rgba(4,9,30,0.8),rgba(4,9,30,0.8)),url(https://nysba.org/app/uploads/2020/01/Contact-Us_Hero-Image-1-1280x640.jpg);
+    background-position: center;
+    background-size: cover;
+    text-align: center;
+    color: #f44336;
+}
+.sub1-header h1{
+    margin-top: 80px;
+    font-size: 30px;
+}
+.location{
+    width: 80%;
+    margin: auto;
+    padding: 80px 0;
+}
+.location iframe{
+    width: 100%;
+}
+.a a{
+    color: black;
+}
+.contact-us{
+    width: 80%;
+    margin: auto;
+}
+.contact-col{
+    flex-basis: 48%;
+    margin-bottom: 30px;
+}
+.contact-col div{
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+}
+.contact-col div .fa{
+    font-size: 28px;
+    color: #f44336;
+    margin: 10px;
+    margin-right: 30px;
+}
+.contact-col div .fa-brands{
+    font-size: 28px;
+    color: #f44336;
+    margin: 10px;
+    margin-right: 30px;
+}
+.contact-col div p{
+    padding: 0;
+}
+.contact-col div h5{
+    margin-bottom: 5px;
+}
+.contact-col input,
+.contact-col textarea{
+    width: 80%;
+    padding: 15px;
+    margin-bottom: 17px;
+    outline: none;
+    border: 1px solid #ccc;
+}
+.contact-col button{
+    width: 20%;
+    padding: 15px;
+    margin-bottom: 10px;
+    outline: none;
+    color: #f44336;
+}
+.contact-col button:hover{
+    opacity: 0.5;
+}
+:focus::-webkit-input-placeholder{
+    opacity: 0;
+}

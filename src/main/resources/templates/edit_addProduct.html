@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet'
+		type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+	<link href="/assets1/css/bootstrap.min.css" rel="stylesheet" />
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}" />
+
+	<!-- Custom CSS -->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/owl.carousel.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/style2.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/responsive.css}" />
+	<title>JSP Page</title>
+	<style>
+		.add{
+			background-color: #9966DB;
+			color: #FFF;
+			border: none;
+			border-radius: 4px;
+			box-shadow: 0 5px 0 #BB99E7;
+			transition: .5s;
+		}
+		.add:active{
+			box-shadow: none;
+			transform: translateY(5px);
+		}
+	
+	</style>
+</head>
+
+<body>
+	<form class="form-horizontal" th:Object="${product}" id="formSubmit" enctype="multipart/form-data">
+		<fieldset>
+
+			<!-- Form Name -->
+			<legend style="text-align: center; background-color:#BB99E7 ;">PRODUCTS</legend>
+
+			<!-- Text input-->
+			<div th:if="${oldId == null}">
+				<div class="form-group" style="margin-top: 30px;">
+					<label class="col-md-4 control-label" for="product_id">PRODUCT ID</label>
+					<div class="col-md-4">
+						<input name="code" id=code th:value="${code}" placeholder="PRODUCT ID" class="form-control input-md" required="" type="text">
+					</div>
+				</div>
+			</div>
+			<div th:if="${oldId != null}">
+				<div class="form-group" style="margin-top: 30px;">
+					<label class="col-md-4 control-label" for="product_id">PRODUCT ID</label>
+					<div class="col-md-4">
+						<input name="code" id=code th:value="${code}" placeholder="PRODUCT ID" class="form-control input-md" required="" type="text" readonly>
+					</div>
+				</div>
+			</div>
+			<!-- Text input-->
+			<div class="form-group" style="margin-top: 30px;">
+				<label class="col-md-4 control-label" for="product_name">PRODUCT NAME</label>
+				<div class="col-md-4">
+					<input id="name" name="name" th:value="${product.name}" placeholder="PRODUCT NAME" class="form-control input-md" required="" type="text">
+				</div>
+			</div>
+
+			<!-- Text input-->
+			<div class="form-group" style="margin-top: 30px;">
+				<label class="col-md-4 control-label" for="product_name_fr">PRODUCT PRICE</label>
+				<div class="col-md-4">
+					<input id= "price" name="price" th:value="${product.price}" placeholder="PRODUCT PRICE" class="form-control input-md" required="" type="text">
+				</div>
+			</div>
+
+			<!-- Select Basic -->
+			<div class="form-group" style="margin-top: 30px;">
+				<label class="col-md-4 control-label" for="product_categorie">PRODUCT TAG</label>
+				<div class="col-md-4">
+					<input id= "tag" name="tag" th:value="${product.tag}" placeholder="PRODUCT TAG" class="form-control input-md" required="" type="text">
+				</div>
+			</div>
+
+			<!-- Text input-->
+			<div class="form-group" style="margin-top: 30px;">
+				<label class="col-md-4 control-label" for="available_quantity">PRODUCT BE_PRICE</label>
+				<div class="col-md-4">
+					<input id= "be_price" name="be_price" th:value="${product.be_price}" placeholder="PRODUCT BE_PRICE" class="form-control input-md" required="" type="text">
+				</div>
+			</div>
+
+			<!-- Text input-->
+			<div class="form-group" style="margin-top: 30px;">
+				<label class="col-md-4 control-label" for="product_weight">PRODUCT DESCRIPTION</label>
+				<div class="col-md-4">
+					<input id= "des" name="des" th:value="${product.des}" placeholder="PRODUCT DESCRIPTION" class="form-control input-md" required="" type="text">
+
+				</div>
+			</div>
+			<input type="hidden" th:field="*{img}">
+			<div class="form-group" style="margin-top: 30px;">
+					<label class="col-md-4 control-label" for="filebutton">PRODUCT IMAGE</label>
+					<div class="col-md-4">
+						<input  class="input-file" id="image" type="file" name="img">
+					</div>
+			</div>
+			<!-- Text input-->
+			<div class="form-group" style="margin-top: 30px;">
+				<label class="col-md-4 control-label" for="product_weight">PRODUCT MODEL</label>
+				<div class="col-md-4">
+					<input id= "model" name="model" th:value="${product.model}" placeholder="PRODUCT MODEL" class="form-control input-md" required="" type="text">
+				</div>
+			</div>
+
+			<!-- Text input-->
+			<div class="form-group" style="margin-top: 30px;">
+				<label class="col-md-4 control-label" for="product_weight">PRODUCT CONFIGURATION</label>
+				<div class="col-md-4">
+					<input id="configuration" name="configuration" th:value="${product.configuration}" placeholder="PRODUCT CONFIGURATION" class="form-control input-md" required="" type="text">
+				</div>
+			</div>
+			<input type="hidden" id="idCheck" name="idCheck" th:value="${oldId}">
+			<!-- Text input-->
+			<div class="form-group" style="margin-top: 30px;">
+				<label class="col-md-4 control-label" for="percentage_discount">PRODUCT QUANTITY</label>
+				<div class="col-md-4">
+					<input id="quantity" name="quantity" th:value="${product.quantity}" placeholder="PRODUCT QUANTITY" class="form-control input-md" required="" type="text">
+				</div>
+			</div>
+			<div class="form-group" style="margin-left: 680px; margin-top: 30px;">
+				<div th:if="${oldId}==null">
+			    	<button type="button" name="singlebutton" class="add" id="btnAddOrUpdateNew">ADD PRODUCT</button>	
+	            </div>
+	            <div th:if="${oldId} != null">
+			    	<button type="button" name="singlebutton" class="add" id="btnAddOrUpdateNew">UPDATE PRODUCT</button>
+	            </div>
+  			</div>
+		</fieldset>
+	</form>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="/assets/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="/assets/js/jquery-1.11.1.min.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$('#btnAddOrUpdateNew').click(function (e) {
+			e.preventDefault();
+			var code = $('#code').val();
+			var name = $('#name').val();
+	        var price = $('#price').val();
+	        var tag = $('#tag').val();
+	        var be_price = $('#be_price').val();
+	        var des = $('#des').val();
+	        var image = $('#image')[0].files[0];
+	        var model = $('#model').val();
+	        var configuration = $('#configuration').val();
+	        var quantity = $('#quantity').val();
+			var data = {};
+			var formData = $('#formSubmit').serializeArray();
+			console.log(formData);
+			$.each(formData, function (i, v) {
+				data["" + v.name + ""] = v.value;
+			});
+			var dataForm = new FormData();
+			dataForm.append('code', code);
+	        dataForm.append('name', name);
+	        dataForm.append('price', price);
+	        dataForm.append('tag', tag);
+	        dataForm.append('be_price', be_price);
+	        dataForm.append('des', des);
+	        dataForm.append('image', image);
+	        dataForm.append('model', model);
+	        dataForm.append('configuration', configuration);
+	        dataForm.append('quantity', quantity);
+			var idOld=$('#idCheck').val();
+			if(idOld==""){
+				addProduct(dataForm);	
+			}
+			else{
+				updateProduct(data);
+			}
+		});
+		function addProduct(data) {
+			$.ajax({
+				url: '/api/product',
+				type: 'POST',
+				data:data,
+				processData: false,
+    			contentType: false,
+				success: function (result) {
+					window.location.href = "/addProduct?message=insert_success";
+				},
+				error: function (error) {
+					window.location.href = "/addProduct?page=1&limit=2&message=error_system";
+				},
+        		always: function (response) {
+            		console.log(response);
+        		}
+			});
+		}
+		function updateProduct(data) {
+			$.ajax({
+				url: '/api/product',
+				type: 'PUT',
+				contentType: 'application/json',
+				data: JSON.stringify(data),
+				dataType: 'json',
+				success: function (result) {
+					window.location.href = "/addProduct?code=" + result.code + "&message=update_success";
+				},
+				error: function (error) {
+					window.location.href = "/addProduct?page=1&limit=2&message=error_system";
+				}
+			});
+		}
+	</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+.ds_table{
+    border-collapse: collapse;
+    margin: 25px 0;
+    width: 50%;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.ds_table thead tr{
+    
+    
+    background-color: #F92C85;
+    color: #fff;
+    text-align: left;
+    font-weight: bold;
+}
+.ds_table th,
+.ds_table td{
+    padding: 12px 15px;
+}
+.ds_table tbody tr{
+    border-bottom: 1px solid #dddddd; 
+}
+.ds_table tbody tr:nth-of-type(even){
+    background-color: #f3f3f3; 
+}
+.ds_table tbody tr:last-of-type{
+    border-bottom: 2px solid #F92C85; 
+}
+a{
+    text-decoration: none;
+    display: block;
+    border: 0.5px;
+    background-color: #5EBEC4;
+    color: #ffffff;
+    text-align: center;
+    border-radius: 4px;
+    padding: 5px;
+}
+.input_f{
+    margin-bottom:  15px;
+    display: flex;
+    align-items: center;
+}
+.input_f label{
+    width: 150px;
+    margin-right: 10px;
+    
+}
+.input_f textArea{
+    width: 500px;
+    
+    
+}
+.btn{
+    display: inline-flex;
+       
+}
