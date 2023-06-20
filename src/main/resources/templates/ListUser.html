@@ -199,7 +199,6 @@
 												<th>Email</th>
 												<th>FirstName</th>
 												<th>LastName</th>
-												<th>Password</th>
 											</thead>
 											<tbody>
 												<th:block th:each="user : ${model.listResult}">
@@ -208,7 +207,6 @@
 														<td><span th:text="${user.email}"></span></td>
 														<td><span th:text="${user.fname}"></span></td>
 														<td><span th:text="${user.lname}"></span></td>
-														<td><span th:text="${user.pass}"></span></td>
 													</tr>
 												</th:block>
 											</tbody>

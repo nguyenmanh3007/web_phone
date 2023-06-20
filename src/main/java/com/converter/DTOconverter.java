@@ -16,7 +16,6 @@ public class DTOconverter {
 		users.setFname(user.getFname());
 		users.setLname(user.getLname());
 		users.setPass(user.getPass());
-		users.setPassencode(user.getPassencode());
 		return users;
 		
 	}
@@ -24,7 +23,10 @@ public class DTOconverter {
 		AdminDTO adminDTO= new AdminDTO();
 		adminDTO.setUsername(admin.getUsername());
 		adminDTO.setPassword(admin.getPassword());
-		
+		adminDTO.setFullname(admin.getFullname());
+		adminDTO.setId(admin.getId());
+		adminDTO.setEmail(admin.getEmail());
+		adminDTO.setPhone(admin.getPhone());
 		return adminDTO;
 	}
 }

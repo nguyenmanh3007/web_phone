@@ -10,19 +10,33 @@ import javax.persistence.Table;
 
 public class Admin {
 	@Id
+	@Column(name="id",nullable = false)
+	private int id;
 	@Column(name="username",nullable=false)
 	private String username;
 	@Column(name="password",nullable=false)
 	private String password;
+	@Column(name="fullname",nullable=false)
+	private String fullname;
+	@Column(name="email",nullable=false)
+	private String email;
+	@Column(name="phone",nullable=false)
+	private String phone;
 	public Admin() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Admin(String username, String password) {
+	
+	public Admin(int id, String username, String password, String fullname, String email, String phone) {
 		super();
+		this.id = id;
 		this.username = username;
 		this.password = password;
+		this.fullname = fullname;
+		this.email = email;
+		this.phone = phone;
 	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -34,6 +48,38 @@ public class Admin {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getFullname() {
+		return fullname;
+	}
+
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 	
 }

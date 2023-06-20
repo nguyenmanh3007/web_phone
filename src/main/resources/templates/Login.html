@@ -25,10 +25,10 @@
 
         <!-- Favicon and touch icons -->
         <link rel="shortcut icon" href="assets/ico/favicon.png">
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" th:href="@{assets/ico/apple-touch-icon-144-precomposed.png}">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" th:href="@{assets/ico/apple-touch-icon-114-precomposed.png}">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" th:href="@{assets/ico/apple-touch-icon-72-precomposed.png}">
+        <link rel="apple-touch-icon-precomposed" th:href="@{assets/ico/apple-touch-icon-57-precomposed.png}">
 
     </head>
 
@@ -67,20 +67,17 @@
 	                        		</div>
 	                            </div>
 	                            <div class="form-bottom">
-				                    <form role="form" th:action="@{/userlogin}" th:Object="${user}" method="post" class="login-form">
+				                    <form role="form" th:action="@{/j_spring_security_check}" method="post" class="login-form">
 				                    <i th:utext="${message}" style="color:red"></i>
 				                    	<div class="form-group">
 				                    		<label class="sr-only" for="form-username">Username</label>
-				                        	<input type="text" th:field="*{username}" placeholder="Username..." class="form-username form-control" id="form-username">
+				                        	<input type="text" name="username" placeholder="Email..." class="form-username form-control" id="form-username">
 				                        </div>
+				                        
 				                        <div class="form-group">
 				                        	<label class="sr-only" for="form-password">Password</label>
-				                        	<input type="password" th:field="*{pass}" placeholder="Password..." class="form-password form-control" id="form-password">
+				                        	<input type="password" name="password" placeholder="Password..." class="form-password form-control" id="form-password">
 				                        </div>
-				                        <input type="hidden" th:field="*{fname}">
-				                        <input type="hidden" th:field="*{lname}">
-				                        <input type="hidden" th:field="*{email}">
-				                        
 				                        <button type="submit" class="btn">Sign in!</button>
 				                    </form>
 			                    </div>
@@ -141,9 +138,8 @@
 				                        </div>
 				                        <div class="form-group">
 				                    		<label class="sr-only" for="form-first-name">Password</label>
-				                        	<input type="password" th:field="*{pass}" placeholder="Password..." class="form-first-name form-control" id="form-Username">
+				                        	<input type="password" th:field="*{pass}" placeholder="Password..." class="form-first-name form-control" id="form-Password">
 				                        </div>
-				                        <input type="hidden" th:field="*{passencode}">
 				                        
 				                        <button type="submit" class="btn">Sign me up!</button>
 				                    </form>

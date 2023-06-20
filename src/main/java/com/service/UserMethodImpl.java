@@ -59,5 +59,20 @@ public class UserMethodImpl implements UserMethod {
 		// TODO Auto-generated method stub
 		return (int) use.count();
 	}
+	@Override
+	public User findByEmail(String user) {
+		// TODO Auto-generated method stub
+		return use.findByEmail(user);
+	}
+	@Override
+	public boolean checkEmail(String email) {
+		Iterable<User> list= use.findAll();
+		for (User u:list) {
+			if(u.getEmail().equals(email)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 }
