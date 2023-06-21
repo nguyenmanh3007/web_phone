@@ -20,7 +20,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/","/adminLogin","/adminForm","/userForm","/assets/**","/assets1/**","/css/**","/js/**","/img/**","/fonts/**" ,"/style.css","/style1.css","/style2.css").permitAll()
+			.antMatchers("/","/adminLogin","/adminForm","/userForm"
+					,"/adminForm2","/admin/order","/userAdminForm","/addProductForm","/adminForm1","/productForm","/adminForm2"
+					,"/api/admin","/api/bill","/api/product","/api/user"
+					,"/assets/**","/assets1/**","/css/**","/js/**","/img/**","/fonts/**" ,"/style.css","/style1.css","/style2.css").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.formLogin()

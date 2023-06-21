@@ -44,11 +44,11 @@ public class ProductAPI {
 			return ResponseEntity.badRequest().body("Product already exists");
 		}
 	}
-	@PutMapping("api/product")
+	@PutMapping("/api/product")
 	public ProductDTO updateProduct(@RequestBody ProductDTO productDTO) {
 		return productMethod.create_update(productDTO);
 	}
-	@DeleteMapping("api/product")
+	@DeleteMapping("/api/product")
 	public void deleteProduct(@RequestBody String ids) {
 			String id= ids.substring(1,ids.length()-1);
 			Product product= productMethod.findByCode(id);
