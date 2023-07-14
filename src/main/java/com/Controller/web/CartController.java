@@ -23,7 +23,7 @@ public class CartController {
 	@Autowired
 	private CartMethod cartMethod;
 	
-	@GetMapping("/shoppage")
+	@GetMapping("/add-to-cart")
 	public String shoppage(Model model, HttpSession session, HttpServletRequest request) {
 		Iterable<Product> listPro= productMethod.getProductByQuantity();
 		model.addAttribute("listProduct", listPro);
@@ -44,7 +44,7 @@ public class CartController {
 		}
 		return "usershop";	
 	}
-	@GetMapping("/cart")
+	@GetMapping("/user-cart")
 	public String cart(Model model,HttpSession session) {
 		String name= (String) session.getAttribute("user");
 		List<Carts> list= cartMethod.getInfoCart(name);
@@ -59,7 +59,7 @@ public class CartController {
 		model.addAttribute("cCart", a);
 		return "cart";
 	}
-	@GetMapping("/checkoutForm")
+	@GetMapping("/user-checkout")
 	public String checkoutform(Model model,HttpSession session) {
 		String name= (String) session.getAttribute("user");
 		List<Carts> list= cartMethod.getInfoCart(name);

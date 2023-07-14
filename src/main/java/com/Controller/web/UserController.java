@@ -7,9 +7,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.jwt.JwtTokenProvider;
 import com.model.Carts;
 import com.model.User;
 import com.service.CartMethod;
@@ -25,6 +23,8 @@ import com.service.UserMethod;
 
 @Controller(value = "userControllerOfWeb")
 public class UserController {
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
 	@Autowired
 	private UserMethod userMethod;
 
@@ -44,34 +44,42 @@ public class UserController {
 	}
 
 	@GetMapping("/userForm")
-	public ModelAndView index() {
+	public ModelAndView index(@RequestParam(value = "message",required = false) String message) {
 		ModelAndView mav = new ModelAndView("Login");
+		mav.addObject("message", message);
 		mav.addObject("user", new User());
 		mav.addObject("userdk", new User());
 		return mav;
 	}
 
-	@GetMapping("/userlogin")
-	public ModelAndView useLogin(HttpSession session) {
+	@GetMapping("/checkLogin")
+	public ModelAndView useLogin(@RequestParam(name="token",required=false) String token,@RequestParam(name="message") String mess,HttpSession session) {
 		ModelAndView mav = new ModelAndView("usershop");
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        session.setAttribute("user", userMethod.findByEmail(userDetails.getUsername()).getUsername());
-		String username = (String) session.getAttribute("user");
-		mav.addObject("listProduct", productMethod.getProductByQuantity());
-		mav.addObject("username", username);
-		List<Carts> listOne = cartMethod.getInfoCart(username);
-		int sumT = 0;
-		for (Carts carts : listOne) {
-			sumT += carts.getTotal();
+		ModelAndView mavTwo = new ModelAndView("Login");
+		if(mess.equals("error_system")) {
+			mavTwo.addObject("message", "Username or password invalid!!!");
+			mavTwo.addObject("userdk", new User());
+			return mavTwo;
 		}
-		mav.addObject("sumT", sumT);
-		int a = cartMethod.getCountCart(username);
-		mav.addObject("cCart", a);
-		return mav;
+		else {
+			String userna= jwtTokenProvider.getUserNameFromJwt(token);
+			session.setAttribute("user", userna);
+			String username = (String) session.getAttribute("user");
+			mav.addObject("listProduct", productMethod.getProductByQuantity());
+			mav.addObject("username", username);
+			List<Carts> listOne = cartMethod.getInfoCart(username);
+			int sumT = 0;
+			for (Carts carts : listOne) {
+				sumT += carts.getTotal();
+			}
+			mav.addObject("sumT", sumT);
+			int a = cartMethod.getCountCart(username);
+			mav.addObject("cCart", a);
+			return mav;
+		}
 	}
 
-	@PostMapping("/loginCtl")
+	@PostMapping("/checkRegister")
 	public ModelAndView userdk(User user) {
 		ModelAndView mav = new ModelAndView("Login");
 		if (userMethod.findByUsername(user.getUsername()) == null) {
@@ -83,7 +91,7 @@ public class UserController {
 		return mav;
 	}
 
-	@GetMapping("/contactForm")
+	@GetMapping("/userContact")
 	public ModelAndView contactF(HttpSession session) {
 		ModelAndView mav = new ModelAndView("contact");
 		mav.addObject("username", session.getAttribute("user"));
@@ -104,8 +112,8 @@ public class UserController {
 			@RequestParam("mess") String mess, Model model) {
 		ModelAndView mav = new ModelAndView("contact");
 		SimpleMailMessage msg = new SimpleMailMessage();
-		msg.setFrom(to);
-		msg.setTo("nguyenmanh.2014.1102@gmail.com");
+		msg.setFrom("nguyenmanh.ptit.3007@gmail.com");
+		msg.setTo(to);
 		msg.setSubject(sj);
 		msg.setText(mess);
 		mail.send(msg);

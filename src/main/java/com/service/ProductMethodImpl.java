@@ -134,7 +134,9 @@ public class ProductMethodImpl implements ProductMethod{
 		List<ProductDTO> lresult= new ArrayList<>();
 		List<Product> products= pro.findAll();
 		for(Product p: products) {
-			lresult.add(productConverter.toDTO(p));
+			if(p.getQuantity()>0) {
+				lresult.add(productConverter.toDTO(p));
+			}
 		}
 		return lresult;
 	}

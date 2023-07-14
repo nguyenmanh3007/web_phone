@@ -7,17 +7,16 @@
 		type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
-	<link href="/assets1/css/bootstrap.min.css" rel="stylesheet" />
-
+	<link rel="stylesheet" type="text/css" th:href="@{../assets/bootstrap/css/bootstrap.min.css}" />
+	<link href="../assets1/css/bootstrap.min.css" rel="stylesheet" />
 	<!-- Font Awesome -->
-	<link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{../css/font-awesome.min.css}" />
 
 	<!-- Custom CSS -->
-	<link rel="stylesheet" type="text/css" th:href="@{/css/owl.carousel.css}" />
-	<link rel="stylesheet" type="text/css" th:href="@{/style2.css}" />
-	<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
-	<link rel="stylesheet" type="text/css" th:href="@{/css/responsive.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{../css/owl.carousel.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{../style2.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{../style.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{../css/responsive.css}" />
 	<title>JSP Page</title>
 	<style>
 		.add{
@@ -142,8 +141,8 @@
 	</form>
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="/assets/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="/assets/js/jquery-1.11.1.min.js" type="text/javascript"></script>
+	<script src="../assets/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="../assets/js/jquery-1.11.1.min.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$('#btnAddOrUpdateNew').click(function (e) {
 			e.preventDefault();
@@ -190,10 +189,10 @@
 				processData: false,
     			contentType: false,
 				success: function (result) {
-					window.location.href = "/addProduct?message=insert_success";
+					window.location.href = "/admin/addOrUpdateProduct?message=insert_success";
 				},
 				error: function (error) {
-					window.location.href = "/addProduct?page=1&limit=2&message=error_system";
+					window.location.href = "/admin/addOrUpdateProduct?page=1&limit=2&message=error_system";
 				},
         		always: function (response) {
             		console.log(response);
@@ -208,10 +207,10 @@
 				data: JSON.stringify(data),
 				dataType: 'json',
 				success: function (result) {
-					window.location.href = "/addProduct?code=" + result.code + "&message=update_success";
+					window.location.href = "/admin/addOrUpdateProduct?code=" + result.code + "&message=update_success";
 				},
 				error: function (error) {
-					window.location.href = "/addProduct?page=1&limit=2&message=error_system";
+					window.location.href = "/admin/addOrUpdateProduct?page=1&limit=2&message=error_system";
 				}
 			});
 		}

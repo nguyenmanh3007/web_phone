@@ -19,7 +19,7 @@ import com.service.BillMethod;
 public class BillController {
 	@Autowired
 	private BillMethod billMethod;
-	@GetMapping("/adminForm2")
+	@GetMapping("/admin/billT")
 	public ModelAndView dash2(@RequestParam(name = "BillDTO", required = false) String billDTO, HttpSession session) {
 			ModelAndView mav= new ModelAndView("dashboard");
 			if (billDTO != null) {

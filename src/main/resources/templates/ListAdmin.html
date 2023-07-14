@@ -28,10 +28,10 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <!-- CSS Files -->
-    <link href="/assets1/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/assets1/css/light-bootstrap-dashboard.css?v=2.0.0 " rel="stylesheet" />
+    <link href="../assets1/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../assets1/css/light-bootstrap-dashboard.css?v=2.0.0 " rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link href="/assets1/css/demo.css" rel="stylesheet" />
+    <link href="../assets1/css/demo.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -50,7 +50,7 @@
                 </div>
                 <ul class="nav">
                     <li class="nav-item active">
-                        <a class="nav-link" id="btn-bill-list" href="/adminForm2">
+                        <a class="nav-link" id="btn-bill-list" href="/admin/billT">
                             <i class="nc-icon nc-chart-pie-35"></i>
                             <p>Bill</p>
                         </a>
@@ -62,7 +62,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="/userAdminForm?page=1&limit=2">
+                        <a class="nav-link" href="/admin/listCustomer?page=1&limit=2">
                             <i class="nc-icon nc-circle-09"></i>
                             <p>User Profile</p>
                         </a>
@@ -74,13 +74,13 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="/addProductForm">
+                        <a class="nav-link" href="/admin/addProduct">
                             <i class="nc-icon nc-paper-2"></i>
                             <p>Add Product</p>
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" id="btn-admin-list" href="/adminForm1">
+                        <a class="nav-link" id="btn-admin-list" href="/admin/listAdmin">
                             <i class="nc-icon nc-atom"></i>
                             <p>Admin Profile</p>
                         </a>
@@ -228,8 +228,8 @@
     </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="/assets/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="/assets/js/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="../assets/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../assets/js/jquery-1.11.1.min.js" type="text/javascript"></script>
 <!--   Core JS Files   -->
 <script type="text/javascript">
 	$('#btn-admin-list').click(function (e) {
@@ -242,10 +242,10 @@
 				type: 'GET',
 				dataType: 'json',
 				success: function (result) {
-					window.location.href = "/adminForm1?AdminDTO=" + encodeURIComponent(JSON.stringify(result));
+					window.location.href = "/admin/listAdmin?AdminDTO=" + encodeURIComponent(JSON.stringify(result));
 				},
 				error: function (error) {
-					window.location.href = "/adminForm1";
+					window.location.href = "/admin/listAdmin";
 				}
 			});
 		}
@@ -259,10 +259,10 @@
 				type: 'GET',
 				dataType: 'json',
 				success: function (result) {
-					window.location.href = "/productForm?ProductDTO=" + encodeURIComponent(JSON.stringify(result));
+					window.location.href = "/admin/listProduct?ProductDTO=" + encodeURIComponent(JSON.stringify(result));
 				},
 				error: function (error) {
-					window.location.href = "/productForm";
+					window.location.href = "/admin/listProduct";
 				}
 			});
 		}
@@ -276,10 +276,10 @@
 				type: 'GET',
 				dataType: 'json',
 				success: function (result) {
-					window.location.href = "/adminForm2?BillDTO=" + encodeURIComponent(JSON.stringify(result));
+					window.location.href = "/admin/billT?BillDTO=" + encodeURIComponent(JSON.stringify(result));
 				},
 				error: function (error) {
-					window.location.href = "/adminForm2";
+					window.location.href = "/admin/billT";
 				}
 			});
 		}	

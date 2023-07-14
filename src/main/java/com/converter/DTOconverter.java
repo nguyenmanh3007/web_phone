@@ -15,7 +15,7 @@ public class DTOconverter {
 		users.setEmail(user.getEmail());
 		users.setFname(user.getFname());
 		users.setLname(user.getLname());
-		users.setPass(user.getPass());
+		users.setPass(user.getPassword());
 		return users;
 		
 	}

@@ -27,7 +27,7 @@ import com.service.ProductMethod;
 public class ProductAPI {
 	@Autowired
 	private ProductMethod productMethod;
-	@PostMapping("api/product")
+	@PostMapping("/api/product")
 	public ResponseEntity<?> createProduct(@ModelAttribute("product") ProductDTO productDTO,@RequestParam("image") MultipartFile file,HttpSession session) throws  IOException {
 		Product oldProduct = productMethod.findByCode(productDTO.getCode());
 		if(productDTO.getCode() != "" && oldProduct == null) {

@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,30 +17,45 @@ import com.converter.BillConverter;
 import com.dto.AdminDTO;
 import com.dto.BillDTO;
 import com.google.gson.Gson;
+import com.jwt.JwtTokenProvider;
 import com.model.Admin;
 import com.model.Bill;
+import com.model.User;
 import com.service.AdminMethod;
 import com.service.BillMethod;
+import com.service.UserMethod;
 
 @Controller(value = "adminControllerOfAdmin")
 public class AdminController {
 	@Autowired
-	private AdminMethod adminMethod;
+	private JwtTokenProvider jwtTokenProvider;
 	@Autowired
 	private BillMethod billMethod;
 	@Autowired
 	private BillConverter billConverter;
+	@Autowired
+	private AdminMethod adminMethod;
+	@Autowired
+	private UserMethod userMethod;
 	@GetMapping("/adminLogin")
 	public ModelAndView lga() {
 		ModelAndView mav= new ModelAndView("AdminLogin");
 		mav.addObject("admin", new Admin());
 		return mav;
 	}
-	@PostMapping("/adminForm")
-	public ModelAndView dashboard(Admin admin, HttpSession session) {
+	@GetMapping("/checkLogin-admin")
+	public ModelAndView dashboard(@RequestParam(name="token",required=false) String token,@RequestParam(name="message") String mess, HttpSession session) {
 		ModelAndView mavOne= new ModelAndView("dashboard");
 		ModelAndView mavTwo= new ModelAndView("AdminLogin");
-		if(adminMethod.existsByUsernameAndPassword(admin.getUsername(), admin.getPassword())==true) {
+		String username= jwtTokenProvider.getUserNameFromJwt(token);
+		User user = userMethod.findByUsername(username);
+		if(mess.equals("error_system") || adminMethod.checkRoleAdmin(user)==false) {
+			mavTwo.addObject("message", "Username or password invalid!!!");
+			mavTwo.addObject("admin", new Admin());
+			return mavTwo;
+		}
+		else {
+			session.setAttribute("username", username);
 			Date datee = new Date();
 			String ngay = new SimpleDateFormat("yyyy-MM-dd").format(datee.getTime());
 			List<Bill> day= billMethod.findByDateAndStatus(ngay,2);
@@ -64,17 +78,12 @@ public class AdminController {
 			mavOne.addObject("list", lOne);
 			mavOne.addObject("list1", lTwo);
 			mavOne.addObject("list3", lThree);
-			session.setAttribute("admin", admin.getUsername());
+			//session.setAttribute("admin", admin.getUsername());
 			mavOne.addObject("username", session.getAttribute("admin"));
 			return mavOne;
 		}
-		else {
-			mavTwo.addObject("message", "Username or password invalid!!!");
-			mavTwo.addObject("admin", new Admin());
-			return mavTwo;
-		}
 	}
-	@GetMapping("/adminForm1")
+	@GetMapping("/admin/listAdmin")
 	public ModelAndView stat(@RequestParam(name = "AdminDTO", required = false) String adminDto,HttpSession session) {
 		ModelAndView mav= new ModelAndView("listAdmin");
 		mav.addObject("username", session.getAttribute("admin"));

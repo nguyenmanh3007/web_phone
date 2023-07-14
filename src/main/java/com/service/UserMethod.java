@@ -22,4 +22,6 @@ public interface UserMethod {
 
 	User findByEmail(String user);
 	boolean checkEmail(String email);
+	boolean existsByUserName(String un);
+	boolean existsByEmail(String email);
 }

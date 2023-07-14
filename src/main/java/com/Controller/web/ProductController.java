@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 
 @Controller(value = "productControllerOfWeb")
 public class ProductController {
-	@GetMapping("/filterForm")
+	@GetMapping("/filterProduct")
 	public ModelAndView fil(@RequestParam(name = "ProductDTO", required = false) String productDTO,HttpSession session) {
 		ModelAndView mav= new ModelAndView("usershop");
 		mav.addObject("username", session.getAttribute("user"));

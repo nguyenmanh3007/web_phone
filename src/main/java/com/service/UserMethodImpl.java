@@ -28,7 +28,7 @@ public class UserMethodImpl implements UserMethod {
 		// TODO Auto-generated method stub
 		Iterable<User> list= use.findAll();
 		for (User u:list) {
-			if(u.getUsername().equals(user) && u.getPass().equals(pass)) {
+			if(u.getUsername().equals(user) && u.getPassword().equals(pass)) {
 				return true;
 			}
 		}
@@ -73,6 +73,16 @@ public class UserMethodImpl implements UserMethod {
 			}
 		}
 		return false;
+	}
+	@Override
+	public boolean existsByUserName(String un) {
+		// TODO Auto-generated method stub
+		return use.existsByUsername(un);
+	}
+	@Override
+	public boolean existsByEmail(String email) {
+		// TODO Auto-generated method stub
+		return use.existsByEmail(email);
 	}
 	
 }

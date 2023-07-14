@@ -10,6 +10,8 @@ import com.Repository.AdminRepository;
 import com.converter.DTOconverter;
 import com.dto.AdminDTO;
 import com.model.Admin;
+import com.model.Roles;
+import com.model.User;
 @Service
 public class AdminMethodImpl implements AdminMethod{
 	@Autowired
@@ -41,6 +43,16 @@ public class AdminMethodImpl implements AdminMethod{
 			lAdminDTOs.add(dtOconverter.toDTO(a));
 		}
 		return lAdminDTOs;
+	}
+	@Override
+	public boolean checkRoleAdmin(User user) {
+		// TODO Auto-generated method stub
+		for(Roles role: user.getListRoles()) {
+			if(role.getRoleId()==2) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

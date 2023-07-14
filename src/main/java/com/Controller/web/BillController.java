@@ -21,7 +21,7 @@ public class BillController {
 	@Autowired
 	private CartMethod cartMethod;
 	
-	@GetMapping("/order")
+	@GetMapping("/user-order")
 	public ModelAndView rabill(HttpSession session) {
 		String username= (String) session.getAttribute("user");
 		List<Bill> list= billMethod.getBillByUser(username);

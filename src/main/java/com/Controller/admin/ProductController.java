@@ -26,7 +26,7 @@ public class ProductController {
 	@Autowired
 	private MessageUtil messageUtil;
 	
-	@GetMapping("/productForm")
+	@GetMapping("/admin/listProduct")
 	public ModelAndView listProduct(@RequestParam(name = "ProductDTO", required = false) String productDTO,HttpSession session) {
 		ModelAndView mav= new ModelAndView("listProduct");
 		mav.addObject("username", session.getAttribute("admin"));
@@ -38,7 +38,7 @@ public class ProductController {
         }
 		return mav;
 	}
-	@GetMapping("/product/{code}/edit")
+	@GetMapping("/admin/product/{code}/edit")
 	public ModelAndView editProductTran(@PathVariable String code) {
 		ModelAndView mav= new ModelAndView("edit_addProduct");
 		Product product = productMethod.findByCode(code);
@@ -46,18 +46,19 @@ public class ProductController {
 		mav.addObject("oldId",product.getCode());
 		return mav;
 	}
-	@GetMapping("/addProductForm")
+	@GetMapping("/admin/addProduct")
 	public ModelAndView addProductTran() {
 		ModelAndView mav= new ModelAndView("edit_addProduct");
 		mav.addObject("product", new Product());
 		return mav;
 	}
 
-	@GetMapping("/addProduct")
+	@GetMapping("/admin/addOrUpdateProduct")
 	public ModelAndView CrudProduct(HttpServletRequest request,HttpSession session) {
 		ModelAndView mav= new ModelAndView("listProduct");
 		if(request.getParameter("message")!=null) {
 	    	  Map<String,String> message= messageUtil.getMessage(request.getParameter("message"));
+	    	  System.out.println(message);
 	    	  mav.addObject("message", message.get("message"));
 	    	  mav.addObject("alert",message.get("alert"));
 	      }

@@ -11,10 +11,10 @@
 
         <!-- CSS -->
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
-        <link rel="stylesheet" th:href="@{assets/bootstrap/css/bootstrap.min.css}" />
-        <link rel="stylesheet" th:href="@{assets/font-awesome/css/font-awesome.min.css}" />
-		<link rel="stylesheet" th:href="@{assets/css/form-elements.css}">
-        <link rel="stylesheet" th:href="@{assets/css/style.css}">
+        <link rel="stylesheet" th:href="@{../assets/bootstrap/css/bootstrap.min.css}" />
+        <link rel="stylesheet" th:href="@{../assets/font-awesome/css/font-awesome.min.css}" />
+		<link rel="stylesheet" th:href="@{../assets/css/form-elements.css}">
+        <link rel="stylesheet" th:href="@{../assets/css/style.css}">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -24,11 +24,11 @@
         <![endif]-->
 
         <!-- Favicon and touch icons -->
-        <link rel="shortcut icon" href="assets/ico/favicon.png">
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+        <link rel="shortcut icon" href="../assets/ico/favicon.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
 
     </head>
 
@@ -67,17 +67,17 @@
 	                        		</div>
 	                            </div>
 	                            <div class="form-bottom">
-				                    <form role="form" th:action="@{/adminForm}" th:Object="${admin}" method="post" class="login-form">
+				                    <form role="form" id="formSubmit" method="post" class="login-form">
 				                    	<span style="color: red;" th:text="${message}"></span>
 				                    	<div class="form-group">
 				                    		<label class="sr-only" for="form-username">Username</label>
-				                        	<input type="text" name="username" th:field="*{username}" placeholder="Username..." class="form-username form-control" id="form-username">
+				                        	<input type="text" name="userName" placeholder="Username..." class="form-username form-control" id="form-username">
 				                        </div>
 				                        <div class="form-group">
 				                        	<label class="sr-only" for="form-password">Password</label>
-				                        	<input type="password" name="password" th:field="*{password}" placeholder="Password..." class="form-password form-control" id="form-password">
+				                        	<input type="password" name="password" placeholder="Password..." class="form-password form-control" id="form-password">
 				                        </div>
-				                        <button type="submit" class="btn">Sign in!</button>
+				                        <button type="submit" id="btn-login" class="btn">Sign in!</button>
 				                    </form>
 			                    </div>
 		                    </div>
@@ -108,12 +108,12 @@
 
         <!-- Javascript -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="assets/js/jquery-1.11.1.min.js"></script>
-        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-        <script src="assets/js/jquery.backstretch.min.js"></script>
-        <script src="assets/js/scripts.js"></script>
+        <script src="../assets/js/jquery-1.11.1.min.js"></script>
+        <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="../assets/js/jquery.backstretch.min.js"></script>
+        <script src="../assets/js/scripts.js"></script>
         <script type="text/javascript">
-		$('#btnLogin').click(function (e) {
+		$('#btn-login').click(function (e) {
 			e.preventDefault();
 			var data = {};
 			var formData = $('#formSubmit').serializeArray();
@@ -126,16 +126,16 @@
 		});
 		function checkLogin(data) {
 			$.ajax({
-				url: '/api/admin',
+				url: '/api/v1/auth/signin',
 				type: 'POST',
 				contentType: 'application/json',
 				data: JSON.stringify(data),
 				dataType: 'json',
 				success: function (result) {
-					window.location.href ="/adminForm?BillDTO="+encodeURIComponent(JSON.stringify(result))+"&message=success";
+					window.location.href ="/checkLogin-admin?token="+result.token+"&message=success";
 				},
 				error: function (error) {
-					window.location.href = "/adminForm?message=error_system";
+					window.location.href = "/checkLogin-admin?message=error_system";
 				}
 			});
 		}

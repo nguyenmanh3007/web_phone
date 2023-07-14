@@ -18,7 +18,7 @@ import com.service.UserMethod;
 public class UserController {
 	@Autowired
 	private UserMethod userMethod;
-	@GetMapping("/userAdminForm")
+	@GetMapping("/admin/listCustomer")
 	public ModelAndView usf(@RequestParam("page") int page, @RequestParam("limit") int limit, HttpSession session) {
 		ModelAndView mav= new ModelAndView("ListUser");
 		mav.addObject("username", session.getAttribute("admin"));
