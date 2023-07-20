@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -104,4 +109,27 @@ public class UserController {
 				.map(item->item.getAuthority()).collect(Collectors.toList());
 		return ResponseEntity.ok(new JwtResponse(jwt,"bearer", customUserDetails.getUsername(),customUserDetails.getPassword(), customUserDetails.getEmail(),customUserDetails.getFname(),customUserDetails.getLname(), listRoles));
 	}
+	@PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+        // Xóa các thông tin đăng nhập khỏi SecurityContextHolder
+        SecurityContextHolder.clearContext();
+
+        // Xóa session
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
+        // Xóa cookie
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                cookie.setMaxAge(0);
+                cookie.setValue(null);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }
+        }
+        return ResponseEntity.ok(new MessageResponse("Logout successfully"));
+    }
 }

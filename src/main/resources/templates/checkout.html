@@ -46,7 +46,7 @@
                             <li><a href="#"><i class="fa fa-user"></i> <span th:text="${username}"></span></a></li>
                             <li><a href="/user-cart"><i class="fa fa-shopping-cart"></i> My Cart</a></li>
                             <li><a href="/user-checkout"><i class="fa fa-heart"></i> Checkout</a></li>
-                            <li><a href="/"><i class="fa fa-user"></i> <span th:text="logout"></span></a></li>
+                            <li><a href="#" id = "btn-logout"><i class="fa fa-user"></i> <span th:text="logout"></span></a></li>
                         </ul>
                     </div>
                 </div>
@@ -705,6 +705,23 @@
 				},
 				error: function (error) {
 					window.location.href = "/user-order?message=error_system";
+				}
+			});
+		}
+		$('#btn-logout').click(function (e) {
+			e.preventDefault();
+			logout();
+		});
+		function logout() {
+			$.ajax({
+				url: '/api/v1/auth/logout',
+				type: 'POST',
+				dataType: 'json',
+				success: function (result) {
+					window.location.href = "/";
+				},
+				error: function (error) {
+					window.location.href = "/";
 				}
 			});
 		}
