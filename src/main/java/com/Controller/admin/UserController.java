@@ -21,7 +21,7 @@ public class UserController {
 	@GetMapping("/admin/listCustomer")
 	public ModelAndView usf(@RequestParam("page") int page, @RequestParam("limit") int limit, HttpSession session) {
 		ModelAndView mav= new ModelAndView("ListUser");
-		mav.addObject("username", session.getAttribute("admin"));
+		mav.addObject("username", session.getAttribute("username"));
 		UserDTO userDTO = new UserDTO();
 		userDTO.setPage(page);
 		Pageable pageable= PageRequest.of(page-1, limit);

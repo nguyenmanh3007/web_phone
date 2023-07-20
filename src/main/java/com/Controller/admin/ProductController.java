@@ -29,7 +29,7 @@ public class ProductController {
 	@GetMapping("/admin/listProduct")
 	public ModelAndView listProduct(@RequestParam(name = "ProductDTO", required = false) String productDTO,HttpSession session) {
 		ModelAndView mav= new ModelAndView("listProduct");
-		mav.addObject("username", session.getAttribute("admin"));
+		mav.addObject("username", session.getAttribute("username"));
 		if (productDTO != null) {
             Gson gson = new Gson();
             ProductDTO pDto = gson.fromJson(productDTO, ProductDTO.class);
@@ -62,10 +62,9 @@ public class ProductController {
 	    	  mav.addObject("message", message.get("message"));
 	    	  mav.addObject("alert",message.get("alert"));
 	      }
-		mav.addObject("username", session.getAttribute("admin"));
+		mav.addObject("username", session.getAttribute("username"));
 		mav.addObject("listProduct1", productMethod.findByQuantity(0));
 		mav.addObject("listProduct", productMethod.getProductByQuantity());
-		mav.addObject("username", session.getAttribute("admin"));
 		return mav;
 	}
 }

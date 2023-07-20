@@ -10,8 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.dto.cartDTO;
 import com.model.Bill;
-import com.model.Carts;
 import com.model.Product;
 import com.service.CartMethod;
 import com.service.ProductMethod;
@@ -28,10 +28,10 @@ public class CartController {
 		Iterable<Product> listPro= productMethod.getProductByQuantity();
 		model.addAttribute("listProduct", listPro);
 		String name= (String) session.getAttribute("user");
-		List<Carts> list= cartMethod.getInfoCart(name);
+		List<cartDTO> list= cartMethod.getInfoCart(name);
 		int sumT=0;
-		for(Carts carts:list) {
-			sumT+=carts.getTotal();
+		for(cartDTO cartDTO:list) {
+			sumT+=cartDTO.getTotal();
 		}
 		model.addAttribute("sumT", sumT);
 		int a = cartMethod.getCountCart(name);
@@ -47,12 +47,12 @@ public class CartController {
 	@GetMapping("/user-cart")
 	public String cart(Model model,HttpSession session) {
 		String name= (String) session.getAttribute("user");
-		List<Carts> list= cartMethod.getInfoCart(name);
+		List<cartDTO> list= cartMethod.getInfoCart(name);
 		model.addAttribute("listCart", list);
 		model.addAttribute("username", name);
 		int sumT = 0;
-		for(Carts carts: list) {
-			sumT += carts.getTotal();
+		for(cartDTO cartDTO: list) {
+			sumT += cartDTO.getTotal();
 		}
 		model.addAttribute("sumT", sumT);
 		int a = cartMethod.getCountCart(name);
@@ -62,11 +62,11 @@ public class CartController {
 	@GetMapping("/user-checkout")
 	public String checkoutform(Model model,HttpSession session) {
 		String name= (String) session.getAttribute("user");
-		List<Carts> list= cartMethod.getInfoCart(name);
+		List<cartDTO> list= cartMethod.getInfoCart(name);
 		model.addAttribute("listCart", list);
 		int sumT = 0;
-		for(Carts carts: list) {
-			sumT += carts.getTotal();
+		for(cartDTO cartDTO: list) {
+			sumT += cartDTO.getTotal();
 		}
 		model.addAttribute("sumT", sumT);
 		int a = cartMethod.getCountCart(name);

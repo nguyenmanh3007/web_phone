@@ -47,10 +47,15 @@ public class AdminController {
 	public ModelAndView dashboard(@RequestParam(name="token",required=false) String token,@RequestParam(name="message") String mess, HttpSession session) {
 		ModelAndView mavOne= new ModelAndView("dashboard");
 		ModelAndView mavTwo= new ModelAndView("AdminLogin");
+		if(mess.equals("error_system")) {
+			mavTwo.addObject("message", "Username or password invalid!!!");
+			mavTwo.addObject("admin", new Admin());
+			return mavTwo;
+		}
 		String username= jwtTokenProvider.getUserNameFromJwt(token);
 		User user = userMethod.findByUsername(username);
-		if(mess.equals("error_system") || adminMethod.checkRoleAdmin(user)==false) {
-			mavTwo.addObject("message", "Username or password invalid!!!");
+		if(adminMethod.checkRoleAdmin(user)==false) {
+			mavTwo.addObject("message", "You do not have permission to access this address!!!");
 			mavTwo.addObject("admin", new Admin());
 			return mavTwo;
 		}
@@ -78,7 +83,6 @@ public class AdminController {
 			mavOne.addObject("list", lOne);
 			mavOne.addObject("list1", lTwo);
 			mavOne.addObject("list3", lThree);
-			//session.setAttribute("admin", admin.getUsername());
 			mavOne.addObject("username", session.getAttribute("admin"));
 			return mavOne;
 		}
@@ -86,7 +90,7 @@ public class AdminController {
 	@GetMapping("/admin/listAdmin")
 	public ModelAndView stat(@RequestParam(name = "AdminDTO", required = false) String adminDto,HttpSession session) {
 		ModelAndView mav= new ModelAndView("listAdmin");
-		mav.addObject("username", session.getAttribute("admin"));
+		mav.addObject("username", session.getAttribute("username"));
 		if (adminDto != null) {
             Gson gson = new Gson();
             AdminDTO adminDTO = gson.fromJson(adminDto, AdminDTO.class);

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dto.BillDTO;
-import com.model.Carts;
+import com.dto.cartDTO;
 import com.service.BillMethod;
 import com.service.CartMethod;
 
@@ -26,24 +26,25 @@ public class BillAPI {
 	@PostMapping("/api/web/bill")
 	public BillDTO saveBill(@RequestBody BillDTO bill,HttpSession session){
 		String name= (String) session.getAttribute("user");
-		List<Carts> list = cartMethod.getInfoCart(name);
+		//List<Carts> list = cartMethod.getInfoCart(name);
+		List<cartDTO> list= cartMethod.getInfoCart(name);
 		int sumT = 0;
-		for(Carts carts: list) {
-			sumT += carts.getTotal();
+		for(cartDTO cartDTO: list) {
+			sumT += cartDTO.getTotal();
 		}
-		for(Carts carts: list) {
-			cartMethod.udProduct(carts.getIdproduct(), carts.getNum());
+		for(cartDTO cartDTO: list) {
+			cartMethod.udProduct(cartDTO.getIdproduct(), cartDTO.getNum());
 		}
 		bill.setTotal(sumT);
 		bill.setUsername(name);
 		Date datee = new Date();
         String ngayMua = new SimpleDateFormat("yyyy/MM/dd").format(datee.getTime());
 		bill.setDate(ngayMua);
-		int idb = cartMethod.getIdBill().getIdbill();
+		int idb = cartMethod.getIdBill();
 		bill.setIdbill(idb+1);
 		String listp = "";
-		for(Carts carts: list) {
-			listp += carts.getNameproduct()+" x"+carts.getNum()+"; ";
+		for(cartDTO cartDTO: list) {
+			listp += cartDTO.getNameproduct()+" x"+cartDTO.getNum()+"; ";
 		}
 		bill.setProducts(listp);
 		bill.setStatus(0);

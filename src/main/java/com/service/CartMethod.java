@@ -2,9 +2,8 @@ package com.service;
 
 import java.util.List;
 
-import com.model.Bill;
+import com.dto.cartDTO;
 import com.model.Cart;
-import com.model.Carts;
 
 public interface CartMethod {
 		Iterable<Cart> findAll();
@@ -12,14 +11,14 @@ public interface CartMethod {
 		void delete(Cart cart);
 		Cart findByIdproduct(String idpro);
 		Cart findIdCart();
-		List<Carts> getInfoCart(String username);
+		List<cartDTO> getInfoCart(String username);
 		int getCountCart(String username);
 		Cart findByIdcart(int id);
 		void updateNum(String id);
 		void updateMNum(String id);
 		void updateTotalCart(String id, int sum);
 		void deleteAllByUsername(String name);
-		Bill getIdBill();
+		int getIdBill();
 		void udProduct(String name, int sl);
 		int findIdCart2();
 		

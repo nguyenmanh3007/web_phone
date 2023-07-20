@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dto.cartDTO;
 import com.jwt.JwtTokenProvider;
-import com.model.Carts;
 import com.model.User;
 import com.service.CartMethod;
 import com.service.ProductMethod;
@@ -67,10 +67,10 @@ public class UserController {
 			String username = (String) session.getAttribute("user");
 			mav.addObject("listProduct", productMethod.getProductByQuantity());
 			mav.addObject("username", username);
-			List<Carts> listOne = cartMethod.getInfoCart(username);
+			List<cartDTO> listOne = cartMethod.getInfoCart(username);
 			int sumT = 0;
-			for (Carts carts : listOne) {
-				sumT += carts.getTotal();
+			for (cartDTO cartDTO : listOne) {
+				sumT += cartDTO.getTotal();
 			}
 			mav.addObject("sumT", sumT);
 			int a = cartMethod.getCountCart(username);
@@ -96,10 +96,10 @@ public class UserController {
 		ModelAndView mav = new ModelAndView("contact");
 		mav.addObject("username", session.getAttribute("user"));
 		String username = (String) session.getAttribute("user");
-		List<Carts> listOne = cartMethod.getInfoCart(username);
+		List<cartDTO> listOne = cartMethod.getInfoCart(username);
 		int sumT = 0;
-		for (Carts carts : listOne) {
-			sumT += carts.getTotal();
+		for (cartDTO cartDTO : listOne) {
+			sumT += cartDTO.getTotal();
 		}
 		mav.addObject("sumT", sumT);
 		int a = cartMethod.getCountCart(username);

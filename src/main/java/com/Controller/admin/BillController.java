@@ -29,13 +29,13 @@ public class BillController {
 				mav.addObject("list1", bDto.getListResultTwo());
 				mav.addObject("list3", bDto.getListResultThree());
 	        }
-			mav.addObject("username", session.getAttribute("admin"));
+			mav.addObject("username", session.getAttribute("username"));
 			return mav;
 	}
 	@GetMapping("/admin/order")
 	public ModelAndView order(HttpSession session) {
 		ModelAndView mav = new ModelAndView("order_admin");
-		mav.addObject("username", session.getAttribute("admin"));
+		mav.addObject("username", session.getAttribute("username"));
 		List<Bill> list0= billMethod.findByStatus(0);
 		List<Bill> list1= billMethod.findByStatus(1);
 		mav.addObject("list", list0);
