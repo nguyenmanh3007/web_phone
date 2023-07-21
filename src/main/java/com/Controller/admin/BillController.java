@@ -2,9 +2,11 @@ package com.Controller.admin;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,16 +21,19 @@ import com.service.BillMethod;
 public class BillController {
 	@Autowired
 	private BillMethod billMethod;
+
+	@Autowired
+	private MessageSource messageSource;
 	@GetMapping("/admin/billT")
-	public ModelAndView dash2(@RequestParam(name = "BillDTO", required = false) String billDTO, HttpSession session) {
+	public ModelAndView dash2(@RequestParam(name = "BillDTO", required = false) String billDTO, HttpSession session, HttpServletRequest request) {
 			ModelAndView mav= new ModelAndView("dashboard");
 			if (billDTO != null) {
-	            Gson gson = new Gson();
-	            BillDTO bDto = gson.fromJson(billDTO, BillDTO.class);
-	            mav.addObject("list", bDto.getListResult());
+				Gson gson = new Gson();
+				BillDTO bDto = gson.fromJson(billDTO, BillDTO.class);
+				mav.addObject("list", bDto.getListResult());
 				mav.addObject("list1", bDto.getListResultTwo());
 				mav.addObject("list3", bDto.getListResultThree());
-	        }
+			}
 			mav.addObject("username", session.getAttribute("username"));
 			return mav;
 	}

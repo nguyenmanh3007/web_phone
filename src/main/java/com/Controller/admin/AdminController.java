@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,23 +45,10 @@ public class AdminController {
 		return mav;
 	}
 	@GetMapping("/checkLogin-admin")
-	public ModelAndView dashboard(@RequestParam(name="token",required=false) String token,@RequestParam(name="message") String mess, HttpSession session) {
+	public ModelAndView dashboard(@RequestParam(name="token",required=false) String token,@RequestParam(name="message",required = false) String mess, HttpSession session) {
 		ModelAndView mavOne= new ModelAndView("dashboard");
 		ModelAndView mavTwo= new ModelAndView("AdminLogin");
-		if(mess.equals("error_system")) {
-			mavTwo.addObject("message", "Username or password invalid!!!");
-			mavTwo.addObject("admin", new Admin());
-			return mavTwo;
-		}
-		String username= jwtTokenProvider.getUserNameFromJwt(token);
-		User user = userMethod.findByUsername(username);
-		if(adminMethod.checkRoleAdmin(user)==false) {
-			mavTwo.addObject("message", "You do not have permission to access this address!!!");
-			mavTwo.addObject("admin", new Admin());
-			return mavTwo;
-		}
-		else {
-			session.setAttribute("username", username);
+		if(mess == null && token==null){
 			Date datee = new Date();
 			String ngay = new SimpleDateFormat("yyyy-MM-dd").format(datee.getTime());
 			List<Bill> day= billMethod.findByDateAndStatus(ngay,2);
@@ -85,6 +73,46 @@ public class AdminController {
 			mavOne.addObject("list3", lThree);
 			mavOne.addObject("username", session.getAttribute("admin"));
 			return mavOne;
+		}
+		else if(mess.equals("error_system")) {
+			mavTwo.addObject("message", "Username or password invalid!!!");
+			mavTwo.addObject("admin", new Admin());
+			return mavTwo;
+		}
+		else {
+			String username = jwtTokenProvider.getUserNameFromJwt(token);
+			User user = userMethod.findByUsername(username);
+			if (adminMethod.checkRoleAdmin(user) == false) {
+				mavTwo.addObject("message", "You do not have permission to access this address!!!");
+				mavTwo.addObject("admin", new Admin());
+				return mavTwo;
+			} else {
+				session.setAttribute("username",", "+ username);
+				Date datee = new Date();
+				String ngay = new SimpleDateFormat("yyyy-MM-dd").format(datee.getTime());
+				List<Bill> day = billMethod.findByDateAndStatus(ngay, 2);
+				List<Bill> ago = (List<Bill>) billMethod.findAll();
+				List<BillDTO> lOne = new ArrayList<>();
+				List<BillDTO> lTwo = new ArrayList<>();
+				List<BillDTO> lThree = new ArrayList<>();
+				for (Bill b : day) {
+					lOne.add(billConverter.toDto(b));
+				}
+				for (Bill m : ago) {
+					if (m.getDate().substring(0, m.getDate().length() - 3).trim().equals(ngay.substring(0, ngay.length() - 3).trim()) && m.getStatus() == 2) {
+						lTwo.add(billConverter.toDto(m));
+					}
+				}
+				for (Bill a : ago) {
+					if (a.getStatus() == 2)
+						lThree.add(billConverter.toDto(a));
+				}
+				mavOne.addObject("list", lOne);
+				mavOne.addObject("list1", lTwo);
+				mavOne.addObject("list3", lThree);
+				mavOne.addObject("username", session.getAttribute("admin"));
+				return mavOne;
+			}
 		}
 	}
 	@GetMapping("/admin/listAdmin")
