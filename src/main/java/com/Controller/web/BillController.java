@@ -4,32 +4,31 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dto.cartDTO;
+import com.dto.CartDTO;
 import com.model.Bill;
 import com.service.BillMethod;
 import com.service.CartMethod;
 
 @Controller(value = "billControllerOfWeb")
+@RequiredArgsConstructor
 public class BillController {
-	@Autowired
-	private BillMethod billMethod;
-	@Autowired
-	private CartMethod cartMethod;
+	private final BillMethod billMethod;
+	private final CartMethod cartMethod;
 	
 	@GetMapping("/user-order")
-	public ModelAndView rabill(HttpSession session) {
+	public ModelAndView getOrderBill(HttpSession session) {
 		String username= (String) session.getAttribute("user");
 		List<Bill> list= billMethod.getBillByUser(username);
 		ModelAndView mav = new ModelAndView("order");
 		mav.addObject("listBill", list);
-		List<cartDTO> listOne= cartMethod.getInfoCart(username);
+		List<CartDTO> listOne= cartMethod.getInfoCart(username);
 		int sumT = 0;
-		for(cartDTO cartDTO: listOne) {
+		for(CartDTO cartDTO: listOne) {
 			sumT += cartDTO.getTotal();
 		}
 		mav.addObject("sumT", sumT);

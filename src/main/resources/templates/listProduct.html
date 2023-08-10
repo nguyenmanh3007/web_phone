@@ -1,17 +1,3 @@
-<!--
-=========================================================
- Light Bootstrap Dashboard - v2.0.1
-=========================================================
-
- Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard
- Copyright 2019 Creative Tim (https://www.creative-tim.com)
- Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard/blob/master/LICENSE)
-
- Coded by Creative Tim
-
-=========================================================
-
- The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.  -->
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
@@ -204,7 +190,7 @@
                                                 <td><span th:text="${bill.configuration}"></span ></td>
                                                 <td><span th:text="${bill.quantity}"></span ></td>
                                                 <td><a onclick="warningBeforeDeleteOne(event)" href="#" style="color: #FB404B;" class="removeOne">Delete</a></td>
-                                                <td><a id="remove" th:href="@{/admin/product/{code}/edit(code=${bill.code})}">Update</a></td>
+                                                <td><a id="removeA" th:href="@{/admin/product/{code}/edit(code=${bill.code})}">Update</a></td>
                                             </tr>
                                             </th:block>
                                         </tbody>
@@ -243,7 +229,7 @@
                                                 <td><span th:text="${bill.configuration}"></span ></td>
                                                 <td><span th:text="${bill.quantity}"></span ></td>
                                                 <td><a style="color: #FB404B;" href="#" onclick="warningBeforeDeleteTwo(event)" class="removeTwo">Delete</a></td>
-                                                <td><a id="remove" th:href="@{/admin/product/{code}/edit(code=${bill.code})}">Update</a></td>
+                                                <td><a id="removeB" th:href="@{/admin/product/{code}/edit(code=${bill.code})}">Update</a></td>
                                             </tr>
                                             </th:block>
                                         </tbody>
@@ -254,41 +240,6 @@
                     </div>
                 </div>
             </div>
-            <footer class="footer">
-                <div class="container-fluid">
-                    <nav>
-                        <ul class="footer-menu">
-                            <li>
-                                <a href="#">
-                                    Home
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Company
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Portfolio
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Blog
-                                </a>
-                            </li>
-                        </ul>
-                        <p class="copyright text-center">
-                            ©
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script>
-                            <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
-                        </p>
-                    </nav>
-                </div>
-            </footer>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

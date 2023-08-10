@@ -2,7 +2,7 @@ package com.service;
 
 import java.util.List;
 
-import com.dto.cartDTO;
+import com.dto.CartDTO;
 import com.model.Cart;
 
 public interface CartMethod {
@@ -11,15 +11,20 @@ public interface CartMethod {
 		void delete(Cart cart);
 		Cart findByIdproduct(String idpro);
 		Cart findIdCart();
-		List<cartDTO> getInfoCart(String username);
+		List<CartDTO> getInfoCart(String username);
 		int getCountCart(String username);
 		Cart findByIdcart(int id);
-		void updateNum(String id);
-		void updateMNum(String id);
-		void updateTotalCart(String id, int sum);
+
+		Integer getTotalCartByUsername(String username);
+		void updateNumberCart(int id);
+		void updateMNumberCart(int id);
+		void updateTotalCart(int id, int sum);
 		void deleteAllByUsername(String name);
 		int getIdBill();
-		void udProduct(String name, int sl);
-		int findIdCart2();
+		void updateQuantityProduct(String name, int sl);
+		int findNumberCart();
+		void addToCart(String idP,String username);
+
+		void updateNumberProductFromCart(int cartId, String checkStatus,String productId);
 		
 }

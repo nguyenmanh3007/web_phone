@@ -1,20 +1,15 @@
 package com.Controller.web;
 
-import java.util.List;
 
 import javax.servlet.http.HttpSession;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.dto.cartDTO;
 import com.jwt.JwtTokenProvider;
 import com.model.User;
 import com.service.CartMethod;
@@ -22,20 +17,13 @@ import com.service.ProductMethod;
 import com.service.UserMethod;
 
 @Controller(value = "userControllerOfWeb")
+@RequiredArgsConstructor
 public class UserController {
-	@Autowired
-	private JwtTokenProvider jwtTokenProvider;
-	@Autowired
-	private UserMethod userMethod;
-
-	@Autowired
-	private ProductMethod productMethod;
-
-	@Autowired
-	private CartMethod cartMethod;
-
-	@Autowired
-	JavaMailSender mail;
+	private final JwtTokenProvider jwtTokenProvider;
+	private final UserMethod userMethod;
+	private final ProductMethod productMethod;
+	private final CartMethod cartMethod;
+	private final JavaMailSender mail;
 
 	@GetMapping("/")
 	public ModelAndView shop() {
@@ -47,8 +35,6 @@ public class UserController {
 	public ModelAndView index(@RequestParam(value = "message",required = false) String message) {
 		ModelAndView mav = new ModelAndView("Login");
 		mav.addObject("message", message);
-		mav.addObject("user", new User());
-		mav.addObject("userdk", new User());
 		return mav;
 	}
 
@@ -58,23 +44,16 @@ public class UserController {
 		ModelAndView mavTwo = new ModelAndView("Login");
 		if(mess.equals("error_system")) {
 			mavTwo.addObject("message", "Username or password invalid!!!");
-			mavTwo.addObject("userdk", new User());
 			return mavTwo;
 		}
 		else {
-			String userna= jwtTokenProvider.getUserNameFromJwt(token);
-			session.setAttribute("user", userna);
+			String userNameFromJwt= jwtTokenProvider.getUserNameFromJwt(token);
+			session.setAttribute("user", userNameFromJwt);
 			String username = (String) session.getAttribute("user");
 			mav.addObject("listProduct", productMethod.getProductByQuantity());
 			mav.addObject("username", username);
-			List<cartDTO> listOne = cartMethod.getInfoCart(username);
-			int sumT = 0;
-			for (cartDTO cartDTO : listOne) {
-				sumT += cartDTO.getTotal();
-			}
-			mav.addObject("sumT", sumT);
-			int a = cartMethod.getCountCart(username);
-			mav.addObject("cCart", a);
+			mav.addObject("sumT", cartMethod.getTotalCartByUsername(username));
+			mav.addObject("cCart", cartMethod.getCountCart(username));
 			return mav;
 		}
 	}
@@ -84,7 +63,7 @@ public class UserController {
 		ModelAndView mav = new ModelAndView("Login");
 		if (userMethod.findByUsername(user.getUsername()) == null) {
 			userMethod.save(user);
-			mav.addObject("mess1", "registion suscessful!!");
+			mav.addObject("mess1", "sign up successful");
 			return mav;
 		}
 		mav.addObject("mess", "username existed!!!");
@@ -96,20 +75,14 @@ public class UserController {
 		ModelAndView mav = new ModelAndView("contact");
 		mav.addObject("username", session.getAttribute("user"));
 		String username = (String) session.getAttribute("user");
-		List<cartDTO> listOne = cartMethod.getInfoCart(username);
-		int sumT = 0;
-		for (cartDTO cartDTO : listOne) {
-			sumT += cartDTO.getTotal();
-		}
-		mav.addObject("sumT", sumT);
-		int a = cartMethod.getCountCart(username);
-		mav.addObject("cCart", a);
+		mav.addObject("sumT", cartMethod.getTotalCartByUsername(username));
+		mav.addObject("cCart", cartMethod.getCountCart(username));
 		return mav;
 	}
 
 	@PostMapping("/sendMail")
 	public ModelAndView sendMailer(@RequestParam("to") String to, @RequestParam("sj") String sj,
-			@RequestParam("mess") String mess, Model model) {
+			@RequestParam("mess") String mess) {
 		ModelAndView mav = new ModelAndView("contact");
 		SimpleMailMessage msg = new SimpleMailMessage();
 		msg.setFrom("nguyenmanh.ptit.3007@gmail.com");

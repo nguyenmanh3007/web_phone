@@ -14,6 +14,8 @@ public interface UserMethod {
 
 	User findByUsername(String user);
 
+	UserDTO getListUser(int page,int limit);
+
 	void save(User user);
 
 	List<UserDTO> findAll(Pageable pageable);

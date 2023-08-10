@@ -22,11 +22,11 @@ public interface ProductRepository extends JpaRepository<Product, String>{
          List<Product> findByPrice1(int price1, int price2);
          
          @Query(value = "select * from product where model=?1 and price>?2 and price <?3",nativeQuery = true)
-         List<Product> findByModelAndPrice1(String mode, int price1,int price2);
+         List<Product> findByModelAndPrice(String mode, int price1,int price2);
          
          @Query(value = "select * from product where Configuration=?1 and price>?2 and price <?3",nativeQuery = true)
-         List<Product> findByConfigurationAndPrice1(String con, int price1, int price2);
+         List<Product> findByConfigurationAndPrice(String con, int price1, int price2);
          
          @Query(value = "select * from product where model=?1 and Configuration=?2 and price>?3 and price <?4",nativeQuery = true)
-         List<Product> findByModelAndConfigurationAndPrice1(String mode, String con, int price1, int price2);
+         List<Product> findByModelAndConfigurationAndPrice(String mode, String con, int price1, int price2);
 }

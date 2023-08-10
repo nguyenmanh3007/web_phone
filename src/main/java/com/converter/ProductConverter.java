@@ -8,43 +8,48 @@ import com.model.Product;
 @Component
 public class ProductConverter {
 	public ProductDTO toDTO(Product product) {
-		ProductDTO dto = new ProductDTO();
-		dto.setCode(product.getCode());
-		dto.setName(product.getName());
-		dto.setPrice(product.getPrice());
-		dto.setTag(product.getTag());
-		dto.setBe_price(product.getBe_price());
-		dto.setDes(product.getDes());
-		dto.setImg(product.getImg());
-		dto.setModel(product.getModel());
-		dto.setConfiguration(product.getConfiguration());
-		dto.setQuantity(product.getQuantity());
-		return dto;
+		ProductDTO productDTO=ProductDTO.builder()
+				.code(product.getCode())
+				.name(product.getName())
+				.price(product.getPrice())
+				.tag(product.getTag())
+				.be_price(product.getBe_price())
+				.des(product.getDes())
+				.img(product.getImg())
+				.model(product.getModel())
+				.configuration(product.getConfiguration())
+				.quantity(product.getQuantity())
+				.build();
+		return productDTO;
 	}
-	public Product toEntity(ProductDTO product) {
-		Product dto = new Product();
-		dto.setCode(product.getCode());
-		dto.setName(product.getName());
-		dto.setPrice(product.getPrice());
-		dto.setTag(product.getTag());
-		dto.setBe_price(product.getBe_price());
-		dto.setDes(product.getDes());
-		dto.setImg(product.getImg());
-		dto.setModel(product.getModel());
-		dto.setConfiguration(product.getConfiguration());
-		dto.setQuantity(product.getQuantity());
-		return dto;
+	public Product toEntity(ProductDTO productDTO) {
+		Product product=Product.builder()
+				.code(productDTO.getCode())
+				.name(productDTO.getName())
+				.price(productDTO.getPrice())
+				.tag(productDTO.getTag())
+				.be_price(productDTO.getBe_price())
+				.des(productDTO.getDes())
+				.img(productDTO.getImg())
+				.model(productDTO.getModel())
+				.configuration(productDTO.getConfiguration())
+				.quantity(productDTO.getQuantity())
+				.build();
+		return product;
 	}
-	public Product toEntity(Product dto,ProductDTO product) {
-		dto.setName(product.getName());
-		dto.setPrice(product.getPrice());
-		dto.setTag(product.getTag());
-		dto.setBe_price(product.getBe_price());
-		dto.setDes(product.getDes());
-		dto.setImg(product.getImg());
-		dto.setModel(product.getModel());
-		dto.setConfiguration(product.getConfiguration());
-		dto.setQuantity(product.getQuantity());
-		return dto;
+	public Product toEntity(Product productR,ProductDTO productDTO) {
+		Product product=Product.builder()
+				.code(productR.getCode())
+				.name(productDTO.getName())
+				.price(productDTO.getPrice())
+				.tag(productDTO.getTag())
+				.be_price(productDTO.getBe_price())
+				.des(productDTO.getDes())
+				.img(productDTO.getImg())
+				.model(productDTO.getModel())
+				.configuration(productDTO.getConfiguration())
+				.quantity(productDTO.getQuantity())
+				.build();
+		return product;
 	}
 }

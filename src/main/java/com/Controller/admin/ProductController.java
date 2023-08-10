@@ -5,7 +5,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,12 +19,10 @@ import com.service.ProductMethod;
 import com.utils.MessageUtil;
 
 @Controller(value = "productControllerOfAdmin")
+@RequiredArgsConstructor
 public class ProductController {
-	@Autowired
-	private ProductMethod productMethod;
-	
-	@Autowired
-	private MessageUtil messageUtil;
+	private final ProductMethod productMethod;
+	private final MessageUtil messageUtil;
 	
 	@GetMapping("/admin/listProduct")
 	public ModelAndView listProduct(@RequestParam(name = "ProductDTO", required = false) String productDTO,HttpSession session) {
@@ -54,7 +52,7 @@ public class ProductController {
 	}
 
 	@GetMapping("/admin/addOrUpdateProduct")
-	public ModelAndView CrudProduct(HttpServletRequest request,HttpSession session) {
+	public ModelAndView addOrUpdateProduct(HttpServletRequest request,HttpSession session) {
 		ModelAndView mav= new ModelAndView("listProduct");
 		if(request.getParameter("message")!=null) {
 	    	  Map<String,String> message= messageUtil.getMessage(request.getParameter("message"));

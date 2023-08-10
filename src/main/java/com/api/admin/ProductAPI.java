@@ -5,9 +5,8 @@ import java.io.IOException;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
-
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,15 +17,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.dto.ProductDTO;
 import com.model.Product;
 import com.service.ProductMethod;
 
 @RestController(value = "productOfAdmin")
+@RequiredArgsConstructor
 public class ProductAPI {
-	@Autowired
-	private ProductMethod productMethod;
+	private final ProductMethod productMethod;
 	@PostMapping("/api/product")
 	public ResponseEntity<?> createProduct(@ModelAttribute("product") ProductDTO productDTO,@RequestParam("image") MultipartFile file,HttpSession session) throws  IOException {
 		Product oldProduct = productMethod.findByCode(productDTO.getCode());
@@ -37,8 +35,7 @@ public class ProductAPI {
             File f1 = new File(path + "/" + filename + "." + ext);
             file.transferTo(f1);
             productDTO.setImg("img/"+filename + "." + ext);
-			ProductDTO newProductDTO=productMethod.create_update(productDTO);
-			return ResponseEntity.ok(newProductDTO);
+			return ResponseEntity.ok(productMethod.create_update(productDTO));
 		}
 		else {
 			return ResponseEntity.badRequest().body("Product already exists");
@@ -55,7 +52,7 @@ public class ProductAPI {
 			productMethod.delete(product);
 	}
 	@GetMapping("/api/product")
-	public ProductDTO showproduct(){
+	public ProductDTO getListProduct(){
 		ProductDTO productDTO= new ProductDTO();
 		productDTO.setListResult(productMethod.findAllProductDTO());
 		productDTO.setListResultTwo(productMethod.findByQuantityProductDTO(0));

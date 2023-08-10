@@ -5,8 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,12 +17,9 @@ import com.model.Bill;
 import com.service.BillMethod;
 
 @Controller(value = "billControllerOfAdmin")
+@RequiredArgsConstructor
 public class BillController {
-	@Autowired
-	private BillMethod billMethod;
-
-	@Autowired
-	private MessageSource messageSource;
+	private final BillMethod billMethod;
 	@GetMapping("/admin/billT")
 	public ModelAndView dash2(@RequestParam(name = "BillDTO", required = false) String billDTO, HttpSession session, HttpServletRequest request) {
 			ModelAndView mav= new ModelAndView("dashboard");

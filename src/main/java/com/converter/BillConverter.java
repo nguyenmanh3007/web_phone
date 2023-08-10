@@ -8,35 +8,35 @@ import com.model.Bill;
 @Component
 public class BillConverter {
 	public BillDTO toDto(Bill bill) {
-		BillDTO billDTO= new BillDTO();
-		billDTO.setIdbill(bill.getIdbill());
-		billDTO.setCountry(bill.getCountry());
-		billDTO.setCity(bill.getCity());
-		billDTO.setCountry(bill.getCountry());
-		billDTO.setHn(bill.getHn());
-		billDTO.setCounty(bill.getCounty());
-		billDTO.setPhone(bill.getPhone());
-		billDTO.setDate(bill.getDate());
-		billDTO.setTotal(bill.getTotal());
-		billDTO.setUsername(bill.getUsername());
-		billDTO.setProducts(bill.getProducts());
-		billDTO.setStatus(bill.getStatus());
+		BillDTO billDTO= BillDTO.builder()
+				.idbill(bill.getIdbill())
+				.country(bill.getCountry())
+				.city(bill.getCity())
+				.county(bill.getCounty())
+				.hn(bill.getHn())
+				.phone(bill.getPhone())
+				.date(bill.getDate())
+				.total(bill.getTotal())
+				.username(bill.getUsername())
+				.products(bill.getProducts())
+				.status(bill.getStatus())
+				.build();
 		return billDTO;
 	}
-	public Bill toEntity(BillDTO bill) {
-		Bill billDTO= new Bill();
-		billDTO.setIdbill(bill.getIdbill());
-		billDTO.setCountry(bill.getCountry());
-		billDTO.setCity(bill.getCity());
-		billDTO.setCountry(bill.getCountry());
-		billDTO.setHn(bill.getHn());
-		billDTO.setCounty(bill.getCounty());
-		billDTO.setPhone(bill.getPhone());
-		billDTO.setDate(bill.getDate());
-		billDTO.setTotal(bill.getTotal());
-		billDTO.setUsername(bill.getUsername());
-		billDTO.setProducts(bill.getProducts());
-		billDTO.setStatus(bill.getStatus());
-		return billDTO;
+	public Bill toEntity(BillDTO billDTO) {
+		Bill bill = Bill.builder()
+				.idbill(billDTO.getIdbill())
+				.country(billDTO.getCountry())
+				.city(billDTO.getCity())
+				.county(billDTO.getCounty())
+				.hn(billDTO.getHn())
+				.phone(billDTO.getPhone())
+				.date(billDTO.getDate())
+				.total(billDTO.getTotal())
+				.username(billDTO.getUsername())
+				.products(billDTO.getProducts())
+				.status(billDTO.getStatus())
+				.build();
+		return bill;
 	}
 }

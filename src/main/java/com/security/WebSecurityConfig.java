@@ -1,5 +1,6 @@
 package com.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,10 +19,10 @@ import com.jwt.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	@Autowired
-	private CustomUserDetailsService customUserDetailsService;
+	private final CustomUserDetailsService customUserDetailsService;
 	@Bean
 	public JwtAuthenticationFilter jwtAuthenticationFilter() {
 		return new JwtAuthenticationFilter();
@@ -29,7 +30,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean(BeanIds.AUTHENTICATION_MANAGER)
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
-		// TODO Auto-generated method stub
 		return super.authenticationManagerBean();
 	}
 	@Bean
@@ -38,32 +38,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		// TODO Auto-generated method stub
-		auth.userDetailsService(customUserDetailsService) // cung cap customUserDetailService cho spring
-		.passwordEncoder(passwordEncoder());			  // cung cap password encoder
+		auth.userDetailsService(customUserDetailsService)
+		.passwordEncoder(passwordEncoder());
 	}
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors() // Ngan chan request tu mot domain khac
+		http.cors()
 		.and().csrf().disable()
 		.authorizeRequests()
 		.antMatchers("/assets/**","/assets1/**","/bootstrap/**","/css/**","/fonts/**","/img/**","/js/**","/paging/**","/filter.js","/lienhe.css","/main.css","/style.css","/style1.css","/style2.css").permitAll()
-		//login
 		.antMatchers("/","/adminLogin","/userForm","/checkLogin-admin","/checkLogin","/checkRegister").permitAll()
-		//admin
 		.antMatchers("/admin/**","/admin/product/**").hasRole("ADMIN")
-		//admin-api
 		.antMatchers("/api/admin","/api/bill","/api/product","/api/user").hasRole("ADMIN")
-		//User
-		.antMatchers("/userContact","/sendMail","/filterProduct","/add-to-cart","/user-cart","/user-checkout","/user-order").hasRole("USER")
-		//user-api
-		.antMatchers("/api/web/bill","api/cart","api/cartNumber","api/web/product").hasRole("USER")
-		//api-login
+		.antMatchers("/userContact","/sendMail","/filterProduct","/add-to-cart","/user-cart","/user-checkout","/user-order").hasAnyRole("USER","ADMIN")
+		.antMatchers("/api/web/bill","api/cart","api/cartNumber","api/web/product").hasAnyRole("USER","ADMIN")
 		.antMatchers("/api/v1/auth/**").permitAll()
 		.antMatchers("/api/v1/test/**").permitAll()
 		.anyRequest().authenticated();
-		
-		//Them mot filter de kiem tr jwt
+
 		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		
 	}

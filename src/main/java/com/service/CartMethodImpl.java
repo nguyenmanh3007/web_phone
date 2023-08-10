@@ -2,25 +2,21 @@ package com.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import com.Repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.Repository.CartRepository;
-import com.dto.cartDTO;
+import com.dto.CartDTO;
 import com.model.Cart;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class CartMethodImpl implements CartMethod {
-	private JdbcTemplate jdbc;
-
-	@Autowired
-	public CartMethodImpl(JdbcTemplate jdbc) {
-		this.jdbc = jdbc;
-	}
-
-	@Autowired
-	private CartRepository cartRepository;
+	private final CartRepository cartRepository;
+	private final ProductRepository productRepository;
 
 	@Override
 	public Iterable<Cart> findAll() {
@@ -29,13 +25,11 @@ public class CartMethodImpl implements CartMethod {
 
 	@Override
 	public void save(Cart cart) {
-		// TODO Auto-generated method stub
 		cartRepository.save(cart);
 	}
 
 	@Override
 	public void delete(Cart cart) {
-		// TODO Auto-generated method stub
 		cartRepository.delete(cart);
 	}
 
@@ -46,17 +40,51 @@ public class CartMethodImpl implements CartMethod {
 
 	@Override
 	public Cart findIdCart() {
-		// TODO Auto-generated method stub
 		return cartRepository.findIdCart();
 	}
 
 	@Override
-	public int findIdCart2() {
-		return cartRepository.findIdCart2();
+	public int findNumberCart() {
+		return cartRepository.findNumberCart();
 	}
+
 	@Override
-	public List<cartDTO> getInfoCart(String username) {
-		// TODO Auto-generated method stub
+	public void addToCart(String idP, String username) {
+		int countCart= findNumberCart();
+		int price=Integer.parseInt(productRepository.findByCode(idP.substring(1, idP.length()-1)).getPrice());
+		Cart cart= new Cart();
+		if(countCart==0) {
+			cart.setIdcart(1);
+		}
+		else {
+			int idCar= findIdCart().getIdcart();
+			cart.setIdcart(idCar+1);
+		}
+		cart.setUsername(username);
+		cart.setIdproduct(idP.substring(1, idP.length()-1));
+		cart.setNum(1);
+		cart.setTotal(price);
+		save(cart);
+	}
+
+	@Override
+	@Transactional
+	public void updateNumberProductFromCart(int cartId, String checkStatus, String productId) {
+		if(checkStatus.equals("plus")) {
+			updateNumberCart(cartId);
+		}
+		else {
+			updateMNumberCart(cartId);
+		}
+		Cart cart= findByIdcart(cartId);
+		int num=cart.getNum();
+		int price= Integer.parseInt(productRepository.findByCode(productId).getPrice());
+		int sum=num*price;
+		updateTotalCart(cartId, sum);
+	}
+
+	@Override
+	public List<CartDTO> getInfoCart(String username) {
 		return cartRepository.getInfoCartTest(username);
 	}
 	
@@ -71,24 +99,32 @@ public class CartMethodImpl implements CartMethod {
 	}
 
 	@Override
-	public void updateNum(String id) {
-		jdbc.update("update cart set num=num+1 where idcart=?", id);
+	public Integer getTotalCartByUsername(String username) {
+		return cartRepository.getTotalCartByUsername(username);
 	}
 
 	@Override
-	public void updateMNum(String id) {
-		jdbc.update("update cart set num=num-1 where idcart=?", id);
+	@Transactional
+	public void updateNumberCart(int id) {
+		cartRepository.updateNumberCart(id);
 	}
 
 	@Override
-	public void updateTotalCart(String id, int sum) {
-		jdbc.update("update cart set total=? where idcart=?", sum, id);
+	@Transactional
+	public void updateMNumberCart(int id) {
+		cartRepository.updateMNumberCart(id);
 	}
 
 	@Override
+	@Transactional
+	public void updateTotalCart(int id, int sum) {
+		cartRepository.updateTotalCart(sum,id);
+	}
+
+	@Override
+	@Transactional
 	public void deleteAllByUsername(String username) {
-
-		jdbc.update("delete from cart where username=?", username);
+		cartRepository.deleteAllByUsername(username);
 	}
 
 	@Override
@@ -97,8 +133,8 @@ public class CartMethodImpl implements CartMethod {
 	}
 
 	@Override
-	public void udProduct(String name, int sl) {
-		jdbc.update("UPDATE product SET  quantity=quantity-? WHERE id=?", sl, name);
-
+	@Transactional
+	public void updateQuantityProduct(String code, int sl) {
+		cartRepository.updateQuantityProduct(sl, code);
 	}
 }

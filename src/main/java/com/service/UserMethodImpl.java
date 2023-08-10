@@ -1,32 +1,29 @@
 package com.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.converter.UserConverter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import com.Repository.UserRepository;
-import com.converter.DTOconverter;
 import com.dto.UserDTO;
 import com.model.User;
 
 @Service
+@RequiredArgsConstructor
 public class UserMethodImpl implements UserMethod {
-    @Autowired
-    private UserRepository use;
-    @Autowired
-    private DTOconverter converter;
+    private final UserRepository userRepository;
+    private final UserConverter userConverter;
 	@Override
 	public Iterable<User> findAll() {
-		// TODO Auto-generated method stub
-		return use.findAll();
+		return userRepository.findAll();
 	}
 	@Override
 	public boolean existsByUsernameAndPass(String user, String pass) {
-		// TODO Auto-generated method stub
-		Iterable<User> list= use.findAll();
+		Iterable<User> list= userRepository.findAll();
 		for (User u:list) {
 			if(u.getUsername().equals(user) && u.getPassword().equals(pass)) {
 				return true;
@@ -36,37 +33,39 @@ public class UserMethodImpl implements UserMethod {
 	}
 	@Override
 	public User findByUsername(String user) {
-		// TODO Auto-generated method stub
-		return use.findByUsername(user);
+		return userRepository.findByUsername(user);
 	}
+
+	@Override
+	public UserDTO getListUser(int page, int limit) {
+		UserDTO userDTO = new UserDTO();
+		userDTO.setPage(page);
+		Pageable pageable= PageRequest.of(page-1, limit);
+		userDTO.setListResult(findAll(pageable));
+		userDTO.setTotalPage((int) Math.ceil((double)(getTotalItem()) / limit));
+		return userDTO;
+	}
+
 	@Override
 	public void save(User user) {
-		// TODO Auto-generated method stub
-		use.save(user);
+		userRepository.save(user);
 	}
 	@Override
 	public List<UserDTO> findAll(Pageable pageable) {
-		// TODO Auto-generated method stub
-		List<UserDTO> users= new ArrayList<>();
-		List<User> lu= use.findAll(pageable).getContent();
-		for(User u: lu) {
-			users.add(converter.toDTO(u));
-		}
-		return users;
+		List<User> lUser= userRepository.findAll(pageable).getContent();
+		return lUser.stream().map(user -> userConverter.toDTO(user)).collect(Collectors.toList());
 	}
 	@Override
 	public int getTotalItem() {
-		// TODO Auto-generated method stub
-		return (int) use.count();
+		return (int) userRepository.count();
 	}
 	@Override
 	public User findByEmail(String user) {
-		// TODO Auto-generated method stub
-		return use.findByEmail(user);
+		return userRepository.findByEmail(user);
 	}
 	@Override
 	public boolean checkEmail(String email) {
-		Iterable<User> list= use.findAll();
+		Iterable<User> list= userRepository.findAll();
 		for (User u:list) {
 			if(u.getEmail().equals(email)) {
 				return true;
@@ -76,13 +75,11 @@ public class UserMethodImpl implements UserMethod {
 	}
 	@Override
 	public boolean existsByUserName(String un) {
-		// TODO Auto-generated method stub
-		return use.existsByUsername(un);
+		return userRepository.existsByUsername(un);
 	}
 	@Override
 	public boolean existsByEmail(String email) {
-		// TODO Auto-generated method stub
-		return use.existsByEmail(email);
+		return userRepository.existsByEmail(email);
 	}
 	
 }

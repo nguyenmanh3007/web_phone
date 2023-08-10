@@ -2,9 +2,7 @@ package com.Controller.admin;
 
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,18 +13,14 @@ import com.service.UserMethod;
 
 
 @Controller(value = "userControllerOfAdmin")
+@RequiredArgsConstructor
 public class UserController {
-	@Autowired
-	private UserMethod userMethod;
+	private final UserMethod userMethod;
 	@GetMapping("/admin/listCustomer")
 	public ModelAndView usf(@RequestParam("page") int page, @RequestParam("limit") int limit, HttpSession session) {
 		ModelAndView mav= new ModelAndView("ListUser");
 		mav.addObject("username", session.getAttribute("username"));
-		UserDTO userDTO = new UserDTO();
-		userDTO.setPage(page);
-		Pageable pageable= PageRequest.of(page-1, limit);
-		userDTO.setListResult(userMethod.findAll(pageable));
-		userDTO.setTotalPage((int) Math.ceil((double)(userMethod.getTotalItem()) / limit));
+		UserDTO userDTO = userMethod.getListUser(page,limit);
 		mav.addObject("totalPage", userDTO.getTotalPage());
 		mav.addObject("page", userDTO.getPage());
 		mav.addObject("model", userDTO);

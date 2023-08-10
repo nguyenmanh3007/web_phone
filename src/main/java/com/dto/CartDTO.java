@@ -1,8 +1,7 @@
 package com.dto;
 
 
-public interface cartDTO {
-	
+public interface CartDTO {
 	int getIdcart();
 	String getUsername();
 	String getIdproduct();

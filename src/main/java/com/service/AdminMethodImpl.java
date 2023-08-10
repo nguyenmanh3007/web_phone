@@ -1,27 +1,24 @@
 package com.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.converter.AdminConverter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import com.Repository.AdminRepository;
-import com.converter.DTOconverter;
 import com.dto.AdminDTO;
 import com.model.Admin;
 import com.model.Roles;
 import com.model.User;
 @Service
+@RequiredArgsConstructor
 public class AdminMethodImpl implements AdminMethod{
-	@Autowired
-	private AdminRepository adm;
-	@Autowired
-	private DTOconverter dtOconverter;
+	private final AdminRepository adminRepository;
+	private final AdminConverter adminConverter;
 	@Override
 	public boolean existsByUsernameAndPassword(String user, String pass) {
-		// TODO Auto-generated method stub
-		Iterable<Admin> list=adm.findAll();
+		Iterable<Admin> list=adminRepository.findAll();
 		for(Admin a:list) {
 			if(a.getUsername().equals(user) && a.getPassword().equals(pass)) {
 				return true;
@@ -31,22 +28,15 @@ public class AdminMethodImpl implements AdminMethod{
 	}
 	@Override
 	public Iterable<Admin> findAll() {
-		// TODO Auto-generated method stub
-		return adm.findAll();
+		return adminRepository.findAll();
 	}
 	@Override
 	public List<AdminDTO> getfindAll() {
-		// TODO Auto-generated method stub
-		List<AdminDTO> lAdminDTOs=new ArrayList<>();
-		List<Admin> list = adm.findAll();
-		for(Admin a:list) {
-			lAdminDTOs.add(dtOconverter.toDTO(a));
-		}
-		return lAdminDTOs;
+		List<Admin> list = adminRepository.findAll();
+		return list.stream().map(admin -> adminConverter.toDTO(admin)).collect(Collectors.toList());
 	}
 	@Override
 	public boolean checkRoleAdmin(User user) {
-		// TODO Auto-generated method stub
 		for(Roles role: user.getListRoles()) {
 			if(role.getRoleId()==2) {
 				return true;
