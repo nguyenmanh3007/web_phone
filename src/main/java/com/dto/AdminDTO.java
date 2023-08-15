@@ -14,4 +14,6 @@ public class AdminDTO extends AbstractDTO<AdminDTO>{
 	private String fullname;
 	private String email;
 	private String phone;
+
+
 }

@@ -76,10 +76,6 @@ public class BillMethodImpl implements BillMethod {
 	@Transactional
 	public BillDTO create(BillDTO billDTO,String name) {
 		List<CartDTO> list= cartMethod.getInfoCart(name);
-		int sumT = 0;
-		for(CartDTO cartDTO: list) {
-			sumT += cartDTO.getTotal();
-		}
 		for(CartDTO cartDTO: list) {
 			cartMethod.updateQuantityProduct(cartDTO.getIdproduct(), cartDTO.getNum());
 		}
@@ -93,7 +89,7 @@ public class BillMethodImpl implements BillMethod {
 				.city(billDTO.getCity())
 				.hn(billDTO.getHn())
 				.phone(billDTO.getPhone())
-				.total(sumT)
+				.total(cartMethod.getTotalCartByUsername(name))
 				.username(name)
 				.date(new SimpleDateFormat("yyyy/MM/dd").format(new Date()))
 				.idbill(cartMethod.getIdBill()+1)
