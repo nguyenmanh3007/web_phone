@@ -7,10 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import com.dto.BillDTO;
 import com.service.BillMethod;
 
@@ -26,5 +24,10 @@ public final class BillAPI {
 	public void deleteCart(@RequestBody String ids) {
 			String id= ids.substring(1,ids.length()-1);
 			billMethod.deleteBillById(Integer.parseInt(id));
+	}
+	@PutMapping("/api/web/bill")
+	public ResponseEntity<?> updateOrder(@RequestBody int ids) {
+		billMethod.updateOrder(ids);
+		return ResponseEntity.accepted().body("oke!!");
 	}
 }

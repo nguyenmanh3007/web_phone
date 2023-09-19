@@ -19,7 +19,7 @@ public interface CartMethod {
 		void updateNumberCart(int id);
 		void updateMNumberCart(int id);
 		void updateTotalCart(int id, int sum);
-		void deleteAllByUsername(String name);
+		void deleteAllByUser(String username);
 		int getIdBill();
 		void updateQuantityProduct(String name, int sl);
 		int findNumberCart();

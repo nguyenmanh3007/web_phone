@@ -7,30 +7,41 @@ import com.converter.UserConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import com.Repository.UserRepository;
 import com.dto.UserDTO;
 import com.model.User;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 @Service
 @RequiredArgsConstructor
 public class UserMethodImpl implements UserMethod {
     private final UserRepository userRepository;
     private final UserConverter userConverter;
+	private final JavaMailSender javaMailSender;
+
 	@Override
-	public Iterable<User> findAll() {
-		return userRepository.findAll();
+	@Async
+	public void sendEmail(String mail, String username, String password) throws MessagingException {
+		MimeMessage message = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+		String htmlMsg = "<h3>Congratulations on your successful account creation</h3>"
+				+ "<img src='https://ncc.asia/images/logo/logo.png'>";
+		message.setContent(htmlMsg, "text/html");
+		message.setText("username: " + username);
+		message.setText("password: " + password);
+		//FileSystemResource file = new FileSystemResource(new File("test.txt"));
+		//helper.addAttachment("Demo Mail", file);
+		helper.setTo(mail);
+		helper.setSubject("Notice of successful registration!");
+		javaMailSender.send(message);
 	}
-	@Override
-	public boolean existsByUsernameAndPass(String user, String pass) {
-		Iterable<User> list= userRepository.findAll();
-		for (User u:list) {
-			if(u.getUsername().equals(user) && u.getPassword().equals(pass)) {
-				return true;
-			}
-		}
-		return false;
-	}
+
 	@Override
 	public User findByUsername(String user) {
 		return userRepository.findByUsername(user);
@@ -64,16 +75,6 @@ public class UserMethodImpl implements UserMethod {
 		return userRepository.findByEmail(user);
 	}
 	@Override
-	public boolean checkEmail(String email) {
-		Iterable<User> list= userRepository.findAll();
-		for (User u:list) {
-			if(u.getEmail().equals(email)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	@Override
 	public boolean existsByUserName(String un) {
 		return userRepository.existsByUsername(un);
 	}
@@ -81,5 +82,4 @@ public class UserMethodImpl implements UserMethod {
 	public boolean existsByEmail(String email) {
 		return userRepository.existsByEmail(email);
 	}
-	
 }

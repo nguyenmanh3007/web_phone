@@ -3,6 +3,7 @@ package com.service;
 import java.util.List;
 
 import com.Repository.ProductRepository;
+import com.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CartMethodImpl implements CartMethod {
 	private final CartRepository cartRepository;
 	private final ProductRepository productRepository;
+	private final UserRepository userRepository;
 
 	@Override
 	public Iterable<Cart> findAll() {
@@ -35,7 +37,7 @@ public class CartMethodImpl implements CartMethod {
 
 	@Override
 	public Cart findByIdproduct(String idpro) {
-		return cartRepository.findByIdproduct(idpro);
+		return cartRepository.findByProduct_Code(idpro);
 	}
 
 	@Override
@@ -54,14 +56,14 @@ public class CartMethodImpl implements CartMethod {
 		int price=Integer.parseInt(productRepository.findByCode(idP.substring(1, idP.length()-1)).getPrice());
 		Cart cart= new Cart();
 		if(countCart==0) {
-			cart.setIdcart(1);
+			cart.setIdCart(1);
 		}
 		else {
-			int idCar= findIdCart().getIdcart();
-			cart.setIdcart(idCar+1);
+			int idCar= findIdCart().getIdCart();
+			cart.setIdCart(idCar+1);
 		}
-		cart.setUsername(username);
-		cart.setIdproduct(idP.substring(1, idP.length()-1));
+		cart.setUser(userRepository.findByUsername(username));
+		cart.setProduct(productRepository.findByCode(idP.substring(1, idP.length()-1)));
 		cart.setNum(1);
 		cart.setTotal(price);
 		save(cart);
@@ -95,7 +97,7 @@ public class CartMethodImpl implements CartMethod {
 
 	@Override
 	public Cart findByIdcart(int id) {
-		return cartRepository.findByIdcart(id);
+		return cartRepository.findByIdCart(id);
 	}
 
 	@Override
@@ -123,8 +125,8 @@ public class CartMethodImpl implements CartMethod {
 
 	@Override
 	@Transactional
-	public void deleteAllByUsername(String username) {
-		cartRepository.deleteAllByUsername(username);
+	public void deleteAllByUser(String username) {
+		cartRepository.deleteAllByUser(username);
 	}
 
 	@Override

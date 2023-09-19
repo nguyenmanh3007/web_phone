@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,7 +47,7 @@ public class UserController {
 	private final PasswordEncoder encoder;
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest) {
+	public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest) throws MessagingException {
 		if (userService.existsByUserName(signupRequest.getUserName())) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Username is already"));
 		}
@@ -63,6 +64,7 @@ public class UserController {
 				.listRoles(listRoles)
 				.build();
 		userService.save(users);
+		userService.sendEmail(signupRequest.getEmail(),signupRequest.getUserName(),signupRequest.getPassword());
 		return ResponseEntity.ok(new MessageResponse("User registered successfully"));
 	}
 

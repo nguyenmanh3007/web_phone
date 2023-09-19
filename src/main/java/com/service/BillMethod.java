@@ -3,6 +3,7 @@ package com.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.dto.BillDTO;
 import com.model.Bill;
@@ -15,7 +16,6 @@ public interface BillMethod {
 
 		Map<String,List<BillDTO>> getAllBill();
 		BillDTO create(BillDTO billDTO,String name);
-		List<Bill> getBillByDate(String day1, String day2);
 		List<Bill> getBillByUser(String username);
 		void deleteBillById(int id);
 		List<Bill> findByStatus(int stt);

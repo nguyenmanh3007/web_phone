@@ -1,10 +1,6 @@
 package com.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 import lombok.*;
 
 @Entity
@@ -32,10 +28,11 @@ public class Bill {
 	private String date;
 	@Column(name="total", nullable=false)
 	private int total;
-	@Column(name="username", nullable=false)
-	private String username;
 	@Column(name="products", nullable=false)
 	private String products;
 	@Column(name="status", nullable=false)
 	private int status;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "userId",nullable = false)
+	private User user;
 }

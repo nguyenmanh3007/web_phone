@@ -1,7 +1,5 @@
 package com.Repository;
-
 import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,34 +8,35 @@ import org.springframework.data.repository.query.Param;
 import com.dto.CartDTO;
 import com.model.Cart;
 public interface CartRepository extends JpaRepository<Cart,String>{
-	      Cart findByIdproduct(String idpro);
-	      Cart findByIdcart(int id);
+	      Cart findByProduct_Code(String idpro);
+	      Cart findByIdCart(int id);
+		  @Query("DELETE FROM Cart c WHERE c.user IN (SELECT u FROM User u WHERE u.username = ?1)")
 		  @Modifying
-	      void deleteAllByUsername(String username);
-		  @Query(value = "UPDATE from Product p SET  p.quantity=p.quantity-?1 WHERE p.code=?2")
+	      void deleteAllByUser(String username);
+		  @Query(value = "UPDATE FROM Product p SET  p.quantity=p.quantity-?1 WHERE p.code=?2")
 		  @Modifying
 		  void updateQuantityProduct(int sl,String code);
-	      @Query(value = "SELECT COUNT(*) FROM cart Where username=?1",nativeQuery = true)
+	      @Query(value = "SELECT COUNT(c) FROM Cart c Where c.user.username=?1")
 	      int getCountCart(String username);
-	  	  @Query(value = "select idbill from bill ORDER BY 1 DESC limit 1",nativeQuery = true)
+	  	  @Query(value = "SELECT b.idbill FROM bill b ORDER BY b.idbill DESC limit 1",nativeQuery = true)
 		  int getIdBill();
-	  	  @Query(value = "select * from cart ORDER BY 1 DESC limit 1",nativeQuery = true)
+			@Query(value = "SELECT * FROM cart c ORDER BY 1 DESC LIMIT 1",nativeQuery = true)
 	  	  Cart findIdCart();
-	  	  @Query(value = "select COUNT(*) from cart",nativeQuery = true)
+	  	  @Query(value = "select COUNT(*) from Cart")
 	  	  int findNumberCart();
-		  @Query(value = "update from Cart c set c.num=c.num+1 where c.idcart=?1")
+		  @Query(value = "update from Cart c set c.num=c.num+1 where c.idCart=?1")
 		  @Modifying
 	  	  void updateNumberCart(int idCart);
-		  @Query(value = "update from Cart c set c.num=c.num-1 where c.idcart=?1")
+		  @Query(value = "update from Cart c set c.num=c.num-1 where c.idCart=?1")
 		  @Modifying
 		  void updateMNumberCart(int idCart);
-	      @Query(value = "update from Cart c set c.total=?1 where c.idcart=?2")
+	      @Query(value = "update from Cart c set c.total=?1 where c.idCart=?2")
 		  @Modifying
 		  void updateTotalCart(int sum, int sl);
-		  @Query(value = "SELECT sum(c.total) from Cart c where c.username=?1")
+		  @Query(value = "SELECT sum(c.total) from Cart c where c.user.username=?1")
 		  Integer getTotalCartByUsername(String username);
-	  	  @Query(value = "select cart.idcart as idcart , cart.username as username,  cart.idproduct as idproduct,cart.num as num, product.name as nameproduct, product.price as price , cart.total as total from cart, product " +
-				  "where cart.idproduct=product.id and cart.username=:username",nativeQuery = true)
+	  	  @Query(value = "select c.idCart as idcart , c.user.username as username,  c.product.code as idproduct,c.num as num, p.name as nameproduct, p.price as price , c.total as total from Cart c, Product p " +
+				  "where c.product.code = p.code and c.user.username=:username")
 	  	  List<CartDTO> getInfoCartTest(@Param("username") String username);
 	      
 }

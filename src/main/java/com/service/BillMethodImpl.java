@@ -5,6 +5,7 @@ import java.util.*;
 
 import com.dto.CartDTO;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ public class BillMethodImpl implements BillMethod {
 	private final BillRepository billRepository;
 	private final BillConverter billConverter;
 	private final CartMethod cartMethod;
+	private final UserMethod userMethod;
 	private final ProductMethod productMethod;
 	@Override
 	public Iterable<Bill> findAll() {
@@ -45,7 +47,9 @@ public class BillMethodImpl implements BillMethod {
 	public Map<String, List<BillDTO>> getAllBill() {
 		String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 		List<Bill> bDay= findByDateAndStatus(currentDate,2);
+		bDay.forEach(x-> Hibernate.initialize(x.getUser()));
 		List<Bill> bHistory= (List<Bill>) findAll();
+		bHistory.forEach(x-> Hibernate.initialize(x.getUser()));
 		List<BillDTO> listBillDay= new ArrayList<>();
 		List<BillDTO> listBillMonth= new ArrayList<>();
 		List<BillDTO> listBillHistory= new ArrayList<>();
@@ -69,19 +73,19 @@ public class BillMethodImpl implements BillMethod {
 	}
 
 	@Override
-	public List<Bill> getBillByDate(String day1, String day2) {
-		return billRepository.getBillByDate(day1, day2);
-	}
-	@Override
 	@Transactional
 	public BillDTO create(BillDTO billDTO,String name) {
 		List<CartDTO> list= cartMethod.getInfoCart(name);
 		for(CartDTO cartDTO: list) {
 			cartMethod.updateQuantityProduct(cartDTO.getIdproduct(), cartDTO.getNum());
 		}
+		int idBill=1;
+		if(billRepository.getNumberBillCurrent()>0){
+			idBill=billRepository.getNumberBillCurrent()+1;
+		}
 		String listp = "";
 		for(CartDTO cartDTO: list) {
-			listp += cartDTO.getNameproduct()+" x "+cartDTO.getNum()+"; ";
+			listp += cartDTO.getNameproduct()+" x"+cartDTO.getNum()+"; ";
 		}
 		BillDTO billResult= BillDTO.builder()
 				.country(billDTO.getCountry())
@@ -90,13 +94,13 @@ public class BillMethodImpl implements BillMethod {
 				.hn(billDTO.getHn())
 				.phone(billDTO.getPhone())
 				.total(cartMethod.getTotalCartByUsername(name))
-				.username(name)
+				.user(userMethod.findByUsername(name))
 				.date(new SimpleDateFormat("yyyy/MM/dd").format(new Date()))
-				.idbill(cartMethod.getIdBill()+1)
+				.idbill(idBill)
 				.products(listp)
 				.status(0)
 				.build();
-		cartMethod.deleteAllByUsername(name);
+		cartMethod.deleteAllByUser(name);
 		return billConverter.toDto(billRepository.save(billConverter.toEntity(billResult)));
 	}
 

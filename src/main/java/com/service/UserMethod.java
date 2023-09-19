@@ -7,10 +7,11 @@ import org.springframework.data.domain.Pageable;
 import com.dto.UserDTO;
 import com.model.User;
 
-public interface UserMethod {
-	Iterable<User> findAll();
+import javax.mail.MessagingException;
 
-	boolean existsByUsernameAndPass(String user, String pass);
+public interface UserMethod {
+
+	void sendEmail(String mail, String username, String password) throws MessagingException;
 
 	User findByUsername(String user);
 
@@ -23,7 +24,6 @@ public interface UserMethod {
 	int getTotalItem();
 
 	User findByEmail(String user);
-	boolean checkEmail(String email);
 	boolean existsByUserName(String un);
 	boolean existsByEmail(String email);
 }

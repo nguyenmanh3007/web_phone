@@ -1,27 +1,19 @@
 package com.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 @Entity
-@Table(name="userss")
-@Data
+@Table(name="users")
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -43,4 +35,14 @@ public class User {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name="User_Role",joinColumns = @JoinColumn(name="UserId"),inverseJoinColumns = @JoinColumn(name="RoleId"))
 	private Set<Roles> listRoles = new HashSet<>();
+	@OneToMany(fetch = FetchType.EAGER,mappedBy = "user",cascade = CascadeType.ALL)
+	@JsonIgnore
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
+	private Set<Cart> carts= new HashSet<>();
+	@OneToMany(fetch = FetchType.EAGER,mappedBy = "user",cascade = CascadeType.ALL)
+	@JsonIgnore
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
+	private List<Bill> bills=new ArrayList<>();
 }

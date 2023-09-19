@@ -1,5 +1,6 @@
 package com.dto;
 
+import com.model.User;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class BillDTO extends AbstractDTO<BillDTO> {
 	private String phone;
 	private String date;
 	private int total;
-	private String username;
+	private User user;
 	private String products;
 	private int status;
 	private List<BillDTO> listResultTwo = new ArrayList<>();

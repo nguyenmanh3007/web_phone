@@ -1,14 +1,12 @@
 package com.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="product")
@@ -38,4 +36,9 @@ public class Product {
 	private String configuration;
 	@Column(name="quantity", nullable=false)
 	private int quantity;
+	@OneToMany(fetch = FetchType.EAGER,mappedBy = "product",cascade = CascadeType.ALL)
+	@JsonIgnore
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
+	private Set<Cart> carts=new HashSet<>();
 }

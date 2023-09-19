@@ -17,20 +17,6 @@ public class AdminMethodImpl implements AdminMethod{
 	private final AdminRepository adminRepository;
 	private final AdminConverter adminConverter;
 	@Override
-	public boolean existsByUsernameAndPassword(String user, String pass) {
-		Iterable<Admin> list=adminRepository.findAll();
-		for(Admin a:list) {
-			if(a.getUsername().equals(user) && a.getPassword().equals(pass)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	@Override
-	public Iterable<Admin> findAll() {
-		return adminRepository.findAll();
-	}
-	@Override
 	public List<AdminDTO> getfindAll() {
 		List<Admin> list = adminRepository.findAll();
 		return list.stream().map(admin -> adminConverter.toDTO(admin)).collect(Collectors.toList());
@@ -38,7 +24,7 @@ public class AdminMethodImpl implements AdminMethod{
 	@Override
 	public boolean checkRoleAdmin(User user) {
 		for(Roles role: user.getListRoles()) {
-			if(role.getRoleId()==2) {
+			if(role.getRoleId()==1) {
 				return true;
 			}
 		}

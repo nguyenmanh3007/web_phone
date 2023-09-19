@@ -16,17 +16,13 @@ import com.model.Roles;
 @RequiredArgsConstructor
 public class RoleMethodImpl implements RoleMethod {
 	private final RoleRepository roleRepository;
-	@Override
-	public Optional<Roles> findByRoleName(ERole roleName) {
-		return roleRepository.findByRoleName(roleName);
-	}
 
 	@Override
 	public Set<Roles> getRole(Set<String> strRoles) {
 		Set<Roles> listRoles = new HashSet<>();
 		if (strRoles == null) {
 			Roles userRole = roleRepository.findByRoleName(ERole.ROLE_USER)
-					.orElseThrow(() -> new RuntimeException("Error: Employee role is not found"));
+					.orElseThrow(() -> new RuntimeException("Error: User role is not found"));
 			listRoles.add(userRole);
 		} else {
 			strRoles.forEach(role -> {

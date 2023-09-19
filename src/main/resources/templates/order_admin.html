@@ -153,7 +153,7 @@
                                             <tr>
                                             	<input type="hidden" id="billId" name="idBill" th:value="${bill.idbill}">
                                                 <td><span th:text="${bill.idbill}"></span ></td>
-                                                <td><span th:text="${bill.username}"></span ></td>
+                                                <td><span th:text="${bill.user.getUsername()}"></span ></td>
                                                 <td><span th:text="${bill.phone}"></span ></td>
                                                 <td><span th:text="${bill.date}"></span ></td>
                                                 <td><span th:text="${bill.products}"></span ></td>
@@ -193,7 +193,7 @@
                                         <th:block th:each="bi : ${list1}">
                                             <tr>
                                                 <td><span th:text="${bi.idbill}"></span ></td>
-                                                <td><span th:text="${bi.username}"></span ></td>
+                                                <td><span th:text="${bi.user.getUsername()}"></span ></td>
                                                 <td><span th:text="${bi.phone}"></span ></td>
                                                 <td><span th:text="${bi.date}"></span ></td>
                                                 <td><span th:text="${bi.products}"></span ></td>

@@ -9,6 +9,5 @@ import com.model.Roles;
 
 
 public interface RoleMethod {
-	Optional<Roles> findByRoleName(ERole roleName);
 	Set<Roles> getRole(Set<String> strRoles);
 }

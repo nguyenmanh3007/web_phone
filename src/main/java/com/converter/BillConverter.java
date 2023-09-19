@@ -17,7 +17,7 @@ public class BillConverter {
 				.phone(bill.getPhone())
 				.date(bill.getDate())
 				.total(bill.getTotal())
-				.username(bill.getUsername())
+				.user(bill.getUser())
 				.products(bill.getProducts())
 				.status(bill.getStatus())
 				.build();
@@ -33,7 +33,7 @@ public class BillConverter {
 				.phone(billDTO.getPhone())
 				.date(billDTO.getDate())
 				.total(billDTO.getTotal())
-				.username(billDTO.getUsername())
+				.user(billDTO.getUser())
 				.products(billDTO.getProducts())
 				.status(billDTO.getStatus())
 				.build();

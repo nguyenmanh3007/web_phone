@@ -15,7 +15,7 @@ public interface ProductRepository extends JpaRepository<Product, String>{
          List<Product> findByModelAndConfiguration(String mode, String con);     
          void deleteByCode(String code);
          
-         @Query(value = "select *from product where quantity>0",nativeQuery = true)
+         @Query(value = "select p from Product p where p.quantity>0")
          List<Product> getProductByQuantity();
          
          @Query(value = "select * from product where price>?1 && price<?2",nativeQuery = true)
